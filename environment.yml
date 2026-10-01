@@ -1,0 +1,30 @@
+name: ssmquant
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+      - torch>=2.2
+      - torchaudio
+      - transformers>=4.40
+      - datasets
+      - mamba-ssm
+      - causal-conv1d>=1.2.0
+      - soundfile
+      - librosa
+      - jiwer
+      - hydra-core
+      - omegaconf
+      - numpy
+      - scipy
+      - pandas
+      - matplotlib
+      - tqdm
+      - pytest
+      - huggingface_hub
+# Note: mamba-ssm and causal-conv1d build fused CUDA kernels at install time
+# and require a CUDA toolkit matching the node's driver — install on the
+# A100 node itself (scripts/phase0_setup_env.sh), not on this dev machine.

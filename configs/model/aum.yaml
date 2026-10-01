@@ -1,0 +1,12 @@
+name: aum
+family: ssm
+repo: https://github.com/mhamzaerol/Audio-Mamba-AuM
+# Fill in once Phase 0 verifies which checkpoint is actually released and
+# matches the ESC-50 / AudioSet task config below.
+checkpoint: ???
+bidirectional: true
+# mamba_ssm's fused scan can't be hooked for internal-tensor quantization
+# (brief section 7). Phase 2 must switch this to true and validate it
+# matches the fused kernel's output within numerical tolerance before any
+# ablation run (Phase 4) trusts it.
+use_reference_scan: false

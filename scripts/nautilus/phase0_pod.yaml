@@ -1,0 +1,33 @@
+# Nautilus/PRP pod requesting a single A100 for Phase 0 setup + reproduction.
+# Fill in <YOUR_NAMESPACE> and image/PVC details once a Nautilus namespace
+# exists (README.md "Setting up on Nautilus"). This is a starting point,
+# not a verified-working spec — Nautilus quotas/queues vary by namespace.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ssmquant-phase0
+  namespace: <YOUR_NAMESPACE>
+spec:
+  containers:
+    - name: ssmquant
+      image: pytorch/pytorch:2.3.0-cuda12.1-cudnn8-devel
+      command: ["sleep", "infinity"]
+      resources:
+        limits:
+          nvidia.com/gpu: "1"
+          cpu: "8"
+          memory: "64Gi"
+        requests:
+          nvidia.com/gpu: "1"
+          cpu: "4"
+          memory: "32Gi"
+      volumeMounts:
+        - name: ssmquant-data
+          mountPath: /data
+  volumes:
+    - name: ssmquant-data
+      persistentVolumeClaim:
+        claimName: <YOUR_PVC>
+  nodeSelector:
+    nvidia.com/gpu.product: NVIDIA-A100-SXM4-80GB
+  restartPolicy: Never

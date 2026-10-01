@@ -1,0 +1,12 @@
+# SSM-internal ablation (AuM only): quantize Δ (step size) in isolation.
+# Requires use_reference_scan: true on the model config (Phase 2 gate).
+# bits is swept over {8, 6, 4} — override on the command line, e.g.
+#   quant=ssm_delta quant.bits=6
+name: ssm_delta
+target: delta
+bits: 8
+symmetric: true
+calibration:
+  n_clips: 256
+  length: train       # ablation variant below recalibrates on long clips
+  seeds: [0, 1, 2]

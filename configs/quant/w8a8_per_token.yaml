@@ -1,0 +1,13 @@
+name: w8a8_per_token
+weights:
+  bits: 8
+  granularity: per_channel
+  symmetric: true
+activations:
+  bits: 8
+  granularity: per_token
+  symmetric: true
+calibration:
+  n_clips: 256
+  length: train
+  seeds: [0, 1, 2]

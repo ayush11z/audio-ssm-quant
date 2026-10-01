@@ -1,0 +1,7 @@
+# Full-precision baseline / passthrough. Phase 2's unit tests must confirm
+# this is an exact "0-bit-change" passthrough (brief section Phase 2).
+name: none
+weights:
+  bits: null
+activations:
+  bits: null

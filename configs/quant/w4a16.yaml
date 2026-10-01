@@ -1,0 +1,11 @@
+name: w4a16
+weights:
+  bits: 4
+  granularity: per_channel
+  symmetric: true
+activations:
+  bits: null
+calibration:
+  n_clips: 256
+  length: train
+  seeds: [0, 1, 2]

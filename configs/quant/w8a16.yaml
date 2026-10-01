@@ -1,0 +1,11 @@
+name: w8a16
+weights:
+  bits: 8
+  granularity: per_channel
+  symmetric: true
+activations:
+  bits: null  # fp16, not quantized
+calibration:
+  n_clips: 256
+  length: train
+  seeds: [0, 1, 2]

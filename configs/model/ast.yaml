@@ -1,0 +1,12 @@
+name: ast
+family: transformer
+checkpoint: MIT/ast-finetuned-audioset-10-10-0.4593
+# AST has fixed positional embeddings sized for ~10s of input. Brief
+# section 5 flags this as a confound for length experiments: pick ONE
+# strategy, document it, keep it fixed across all runs.
+# - interpolate: bilinearly interpolate the pos-embedding grid to the
+#   longer input's patch grid size
+# - sliding_window: chunk into ~10s windows, aggregate logits (mean pool)
+# Not yet decided — this is a Phase 1 decision, log the choice + reason in
+# DECISIONS.md before running any length > ~10s.
+long_input_strategy: ???

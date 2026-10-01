@@ -1,0 +1,12 @@
+# SSM-internal ablation (AuM only): quantize the recurrent state h only,
+# at every timestep. Requires the step-by-step recurrence loop (brief
+# section 7) — this is the slow one, budget GPU time accordingly.
+# bits swept over {8, 6, 4}: quant=ssm_state quant.bits=6
+name: ssm_state
+target: h
+bits: 8
+symmetric: true
+calibration:
+  n_clips: 256
+  length: train
+  seeds: [0, 1, 2]

@@ -1,0 +1,6 @@
+name: audioset
+type: classification
+metric: mAP
+num_classes: 527
+dataset: ???  # which AudioSet subset (balanced/unbalanced eval) — Phase 0
+train_length_sec: 10

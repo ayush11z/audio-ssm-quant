@@ -1,0 +1,9 @@
+name: esc50
+type: classification
+metric: accuracy
+num_classes: 50
+# Set once Phase 0 confirms which AuM/AST checkpoints are ESC-50 fine-tuned
+# vs. AudioSet-only (brief section 5: "whichever matches the available
+# checkpoints").
+dataset: ???
+train_length_sec: ???

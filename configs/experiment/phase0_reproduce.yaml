@@ -1,0 +1,18 @@
+# Phase 0 gate: reproduce AuM's and AST's reported benchmark numbers to
+# within ~1 point before anything else proceeds.
+#
+# This config composes a SINGLE (model, task, quant=none) run, matching the
+# brief's "every run reproducible from its config and seed" convention.
+# scripts/phase0_reproduce.py loops this over model in {aum, ast} itself —
+# see that script for the sweep, not a defaults list here (Hydra can't
+# express "give me both aum and ast" via one defaults list on the same
+# group).
+defaults:
+  - /model: aum
+  - /task: esc50
+  - /quant: none
+  - _self_
+
+seed: 0
+tolerance_points: 1.0
+output: results/phase0_reproduction.jsonl

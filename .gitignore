@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.egg-info/
+
+# Environments
+.venv/
+env/
+
+# Data & checkpoints (large, not committed)
+data/raw/
+data/processed/
+checkpoints/
+*.ckpt
+*.pt
+*.pth
+third_party/*/
+
+# Cached full-precision outputs/states (large)
+cache/
+
+# Results are logged as JSONL and kept, but large artifacts are not
+results/*.npz
+results/*.pt
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Secrets
+.env
+*.token
