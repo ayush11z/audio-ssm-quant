@@ -2,6 +2,31 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-01 — Nebius evaluated as a compute alternative, paused
+
+User signed up for Nebius (console.nebius.com) hoping for free GPU access.
+Checked the console directly (logged-in session):
+
+- **GPU quota**: real — 32x H100 (80GB), 32x H200, 32x L40S available in
+  `eu-north1` (more in `eu-south1`), room for 5 GPU clusters. No A100s
+  offered by Nebius at all; their lineup is H100/H200/L40S/RTX PRO
+  6000/B200/B300/GB300. Not a downgrade from the brief's A100 target — H100
+  is newer and `mamba_ssm`/`causal-conv1d` support it well.
+- **Billing**: not configured, and no free-credit grant is visible anywhere
+  in the console. Submitting billing details explicitly says it will charge
+  the card **$25 immediately** to top up the balance; a single H100 then
+  runs ~$4.63/hr (~$3,380/month if left running). This is a paid cloud, not
+  a free tier.
+
+Decision: paused Nebius. User chose to pursue the brief's original target
+(Nautilus/PRP — UCSD co-founded it, likely free for this research use) or
+other free options (Colab/Kaggle for small-scale Phase 0 checks) instead of
+paying Nebius. If Nebius is revisited later with an actual credit code or
+the user adds their own billing, the GPU quota above is already available —
+no need to re-check it, just update `scripts/nautilus/phase0_pod.yaml`
+analog for Nebius (VM create flow, not Kubernetes) and swap `model: h100`
+in for `A100` anywhere the brief's configs assume Nautilus specifically.
+
 ## 2026-09-30 — Repo isolated from home-directory git repo
 
 The directory this project lives in (`~/Documents/ML /SSM`) was *inside* a git
