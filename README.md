@@ -10,11 +10,15 @@ from that brief are logged in [`DECISIONS.md`](DECISIONS.md).
 
 ## Status
 
-**Phase 0 (environment and reproduction) has not started.** This repo
-currently contains only the project skeleton: config structure, package
-layout, and a Nautilus job spec. See `DECISIONS.md` for why — short version:
-this needs an A100 node (Nautilus/PRP cluster) and that access isn't
-configured on the machine that scaffolded this repo yet.
+**Phase 0 is partially underway, not passed.** On a free Lightning.ai T4
+Studio (no A100/H100 access yet — see `DECISIONS.md`), the AST half of
+Phase 0 ran end-to-end: checkpoint loads, inference pipeline works, but the
+reproduction number (99.3% on the full ESC-50 set) does **not** cleanly
+match the checkpoint author's reported 92.75% — see
+`scripts/phase0_ast_esc50_eval.py` and `results/phase0_reproduction.jsonl`
+for why (train/eval leakage, no documented held-out fold). The SSM/AuM half
+of Phase 0 remains fully blocked: `mamba_ssm`'s fused kernel needs an
+Ampere+ GPU (compute capability 8.0+), which T4 (7.5) doesn't have.
 
 ## Repo layout
 

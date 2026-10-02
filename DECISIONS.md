@@ -2,6 +2,65 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-01 — Lightning.ai free T4: Phase 0 AST/ESC-50 run, honest result
+
+User had free credits on lightning.ai (5.00 credits in a "default-project"
+teamspace). Checked it directly: Lightning.ai genuinely offers a **free T4**
+(16GB, no card required) alongside paid A100/H100/etc. (A100 does require a
+verified card even on "free tier" -- declined per user's explicit "don't add
+my card anywhere"). Spun up a Studio (`ssm-quant-phase0`), cloned this repo,
+and ran the AST half of Phase 0 on the free T4.
+
+**mamba_ssm is still out of scope on this GPU**: T4 is Turing (compute
+capability 7.5), `mamba_ssm`'s fused kernel needs Ampere+ (8.0+), confirmed
+before installing anything. AuM/the SSM side of Phase 0 is still blocked on
+A100/H100 access.
+
+**Checkpoint found**: `bioamla/ast-esc50` (mirrored at
+`shreyahegde/ast-finetuned-audioset-10-10-0.450_ESC50`) is a community
+fine-tune of the brief's exact checkpoint
+(`MIT/ast-finetuned-audioset-10-10-0.4593`) on ESC-50, reporting **92.75%**
+accuracy on its own eval split. The brief's named checkpoint
+(`MIT/ast-finetuned-audioset-10-10-0.4593`) does still exist on HF, but
+reproducing its 45.93 mAP exactly needs the full AudioSet eval set (~20k
+YouTube-sourced clips) -- not attempted, out of scope for a quick free-GPU
+session.
+
+**Result** (`scripts/phase0_ast_esc50_eval.py`, logged in
+`results/phase0_reproduction.jsonl`): ran the checkpoint over all 2000 clips
+of `ashraq/esc50` (the only split that dataset ships -- no documented
+held-out test fold) and got **99.3% accuracy**, not the reported 92.75%.
+
+**This is NOT a passed Phase 0 gate.** The checkpoint author never
+documented which ESC-50 fold(s) they held out during fine-tuning, and
+`ashraq/esc50` has no separate test split, so evaluating on "the whole
+dataset" almost certainly includes clips the model was fine-tuned on --
+the 99.3% is inflated by train/eval leakage, not a clean reproduction.
+Per brief section 12 ("never fabricate or estimate results"), this is
+reported honestly as unresolved rather than rounded off to "~1 point, close
+enough." What it DOES establish: the environment, checkpoint loading, and
+AST inference pipeline all work correctly end-to-end on a free T4 (sensible
+predictions, no pipeline bugs) -- genuinely useful progress, just not the
+specific gate the brief asks for.
+
+**To actually close this gate**: either get the checkpoint author's
+train/test fold split, or fine-tune a fresh AST-on-ESC50 checkpoint
+ourselves with a documented 4-fold-train/1-fold-test split (standard ESC-50
+protocol) -- the latter is more work but fully reproducible by us.
+
+**Engineering friction hit along the way** (fixed, noted in case it recurs):
+the base conda environment's `scipy` (1.18.1) predates `numpy`'s removal of
+`np.long`, breaking `transformers`' import chain as soon as any numpy >1.20
+was installed; fixed by pinning `numpy==1.26.4` + `scipy==1.13.1` together.
+Separately, `torchaudio` installed via plain `pip install torchaudio` built
+against a different torch ABI than the already-installed `torch==2.8.0+cu128`
+(`undefined symbol: torch_library_impl`); fixed by reinstalling
+`torchaudio==2.8.0` from `https://download.pytorch.org/whl/cu128` explicitly.
+`datasets`' newer `Audio` feature requires `torchcodec`, which in turn needs
+system FFmpeg/NVIDIA NPP libraries not present on the Studio -- sidestepped
+by decoding audio ourselves with `soundfile` instead of relying on
+`datasets`' built-in decode-on-access.
+
 ## 2026-10-01 — Nebius evaluated as a compute alternative, paused
 
 User signed up for Nebius (console.nebius.com) hoping for free GPU access.

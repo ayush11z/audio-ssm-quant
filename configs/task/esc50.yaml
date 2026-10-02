@@ -2,8 +2,10 @@ name: esc50
 type: classification
 metric: accuracy
 num_classes: 50
-# Set once Phase 0 confirms which AuM/AST checkpoints are ESC-50 fine-tuned
-# vs. AudioSet-only (brief section 5: "whichever matches the available
-# checkpoints").
-dataset: ???
-train_length_sec: ???
+# Phase 0 finding (2026-10-01): ashraq/esc50 on Hugging Face ships only a
+# single "train" split (n=2000) -- no documented held-out fold. See
+# DECISIONS.md for why this blocks a clean reproduction gate for the AST
+# side until we either get the checkpoint author's fold info or fine-tune
+# our own checkpoint with a documented split.
+dataset: ashraq/esc50
+train_length_sec: 5
