@@ -1,10 +1,28 @@
 name: aum
 family: ssm
 repo: https://github.com/mhamzaerol/Audio-Mamba-AuM
-# Fill in once Phase 0 verifies which checkpoint is actually released and
-# matches the ESC-50 / AudioSet task config below.
-checkpoint: ???
+# Phase 0 finding (2026-10-04): verified checkpoint, official AudioSet-
+# pretrained, VGGSound-finetuned "Base AudioSet" variant. Google Drive link
+# in the repo's README table; download with gdown (see
+# scripts/phase0_aum_vggsound_inference.py docstring for the exact flow).
+checkpoint: aum-base_audioset-vggsound.pth
+aum_variant: Fo-Bi  # README's bimamba_type mapping: Fo-Fo=none, Fo-Bi=v1, Bi-Bi=v2
 bidirectional: true
+# CRITICAL (Phase 0 finding, see DECISIONS.md): AuM does NOT run on stock
+# mamba_ssm. It requires:
+#   - torch==2.1.1+cu118, causal_conv1d==1.1.3.post1, mamba_ssm==1.1.3.post1
+#     (NOT latest -- newer mamba_ssm internals have diverged)
+#   - a bidirectional-processing patch from the ViM repo, shipped inside
+#     AuM's own repo at vim-mamba_ssm/mamba_ssm/, copied over the installed
+#     mamba_ssm package AFTER every `pip install mamba_ssm`. Stock
+#     mamba_ssm has no bimamba_type argument at all.
+#   - Python 3.10 (not whatever's on the node by default)
+# scripts/phase0_setup_env.sh does all of this; it's the verified-working
+# recipe, not a guess.
+pinned_torch: "2.1.1+cu118"
+pinned_mamba_ssm: "1.1.3.post1"
+pinned_causal_conv1d: "1.1.3.post1"
+requires_vim_bidirectional_patch: true
 # mamba_ssm's fused scan can't be hooked for internal-tensor quantization
 # (brief section 7). Phase 2 must switch this to true and validate it
 # matches the fused kernel's output within numerical tolerance before any

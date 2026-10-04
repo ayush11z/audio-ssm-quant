@@ -10,15 +10,31 @@ from that brief are logged in [`DECISIONS.md`](DECISIONS.md).
 
 ## Status
 
-**Phase 0 is partially underway, not passed.** On a free Lightning.ai T4
-Studio (no A100/H100 access yet — see `DECISIONS.md`), the AST half of
-Phase 0 ran end-to-end: checkpoint loads, inference pipeline works, but the
-reproduction number (99.3% on the full ESC-50 set) does **not** cleanly
-match the checkpoint author's reported 92.75% — see
-`scripts/phase0_ast_esc50_eval.py` and `results/phase0_reproduction.jsonl`
-for why (train/eval leakage, no documented held-out fold). The SSM/AuM half
-of Phase 0 remains fully blocked: `mamba_ssm`'s fused kernel needs an
-Ampere+ GPU (compute capability 8.0+), which T4 (7.5) doesn't have.
+**Phase 0 is partially underway, strict dataset-level gate not yet passed
+for either model — but both pipelines are now verified working
+end-to-end.**
+
+- **AST**: ran on a free Lightning.ai T4. Checkpoint loads, inference
+  pipeline works, but 99.3% on the full ESC-50 set does **not** cleanly
+  match the checkpoint author's reported 92.75% (train/eval leakage, no
+  documented held-out fold). See `scripts/phase0_ast_esc50_eval.py`.
+- **AuM / mamba_ssm**: the thing blocked since the project started —
+  `mamba_ssm`'s fused kernel needs an Ampere+ GPU (8.0+), and every free GPU
+  tried before this was Turing (7.5). Resolved via a free RTX A6000 (compute
+  8.6) on Thunder Compute. AuM needs a bidirectional-patched `mamba_ssm`
+  (not stock — see `DECISIONS.md`) plus old pinned versions
+  (`torch==2.1.1+cu118`, `causal_conv1d`/`mamba_ssm==1.1.3.post1`). Ran the
+  authors' own official inference checkpoint + sample data: **4/5 (80%)
+  correct** with 0.91-0.99 confidence, using their exact preprocessing. Not
+  a reproduction of their reported 46.78 mAP (that's over the full VGGSound
+  eval set, 5 clips isn't), but strong evidence the pipeline itself is
+  correct. See `scripts/phase0_aum_vggsound_inference.py`.
+
+Both results logged honestly (`gate_passed: false`) in
+`results/phase0_reproduction.jsonl` — neither claims a clean reproduction.
+Closing the strict dataset-level gate for either model needs the actual
+full eval set (AudioSet or VGGSound), which is a real scope decision, not
+something to just do.
 
 ## Repo layout
 

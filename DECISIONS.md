@@ -2,6 +2,100 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-04 — mamba_ssm pipeline verified working end-to-end on Thunder Compute RTX A6000
+
+**The big blocker since Phase 0 started is resolved**: the full `mamba_ssm`
+fused-kernel pipeline now runs correctly on real hardware. This was blocked
+since the project started because every free GPU found so far (T4 on
+Lightning.ai and Kaggle) is Turing (compute capability 7.5), and
+`mamba_ssm`'s fused kernel needs Ampere+ (8.0+).
+
+**Compute**: user signed up for Thunder Compute's student program ($20 free
+credit, US institutions only, console.thundercompute.com). Checked it
+directly: the RTX A6000 (48GB, compute capability **8.6**) is unlocked with
+just the free credit, no card required — only the A100/H100 require adding
+a real card ("Payment required: a card or Auto-pay alone won't unlock it"),
+same pattern as every other provider checked so far, so those stayed
+untouched. $0.35/hr means the $20 credit covers ~57 hours.
+
+**Connecting to it**: the console has no browser-based IDE (unlike
+Lightning.ai) — it's SSH/CLI-only via their own `tnr` tool. The PyPI package
+(`pip install tnr`) is explicitly deprecated and pulled in a mess of
+conflicting dependencies into the *local* machine's conda environment
+(numpy/pandas/pillow/rich/click version fights) — uninstalled it immediately.
+The correct install is the standalone binary from
+github.com/Thunder-Compute/thunder-cli/releases
+(`tnr_2.1.0_darwin_arm64.tar.gz` for this Mac), placed in `~/.local/bin`.
+`tnr login` needs an interactive TTY that a non-interactive shell doesn't
+have; generated an API token instead (console → Settings → Authentication →
+API Tokens) and ran `tnr login --token <token>`. `tnr connect 0` then both
+auto-generates an SSH key and adds a `Host tnr-0` entry to `~/.ssh/config`,
+after which plain `ssh tnr-0 '<command>'` works non-interactively — much
+more efficient than the Lightning.ai session, which only had a browser-based
+VS Code terminal.
+
+**AuM does NOT use stock mamba_ssm.** This was the real discovery of this
+session: `third_party/Audio-Mamba-AuM`'s own README requires:
+- Python 3.10 (not whatever's on the box — this Ubuntu 22.04 box's default
+  `python3` is 3.12; `python3.10` exists but needs `apt install
+  python3.10-venv` first, which needs `apt-get update` run once first too)
+- the OLD pinned `torch==2.1.1+cu118` (not whatever CUDA build matches the
+  driver — the driver here reports CUDA 13.3, but PyTorch cu118 wheels still
+  run fine against it; CUDA is backward compatible this way)
+- the OLD pinned `causal_conv1d==1.1.3.post1` and `mamba_ssm==1.1.3.post1`
+  (not latest — newer mamba_ssm's internals have diverged enough that AuM's
+  `src/models/mamba_models.py` wouldn't import cleanly against them)
+- **a bidirectional-processing patch** borrowed from the ViM (Vision Mamba)
+  repo, shipped inside AuM's own repo at `vim-mamba_ssm/mamba_ssm/`, that
+  must be copied over the installed `mamba_ssm` package in site-packages
+  AFTER every `pip install mamba_ssm`. Stock mamba_ssm has no `bimamba_type`
+  argument at all — AuM's forward/backward (`Fo-Bi`) and bidirectional
+  (`Bi-Bi`) variants literally cannot run without this patch. The original
+  Phase 0 scaffolding (`configs/model/aum.yaml`) didn't know this yet;
+  `scripts/phase0_setup_env.sh` has been rewritten to do this correctly,
+  replacing the earlier untested version that assumed conda and plain
+  latest `mamba_ssm`/`causal-conv1d`.
+
+**Two real build snags, both fixed**: (1) first `causal_conv1d`/`mamba_ssm`
+install attempts failed on missing `wheel` — built-dep installs had gone
+into a different, earlier venv by mistake, and the failure was masked
+because the install was logged as `cmd > log 2>&1; echo EXIT:$?`, which
+captures the `echo`'s exit code (always 0), not pip's. Fixed by checking the
+log content directly, not trusting the wrapper's reported exit status, and
+by using `cmd > log 2>&1 && echo SUCCESS || echo FAILED` from then on. (2)
+first inference run failed in Triton's JIT compiler (`mamba_ssm`'s fused
+RMSNorm needs Triton) with `Python.h: No such file or directory` — fixed
+with `apt install python3.10-dev gcc`.
+
+**Result**: `pip install mamba_ssm==1.1.3.post1` actually used a **prebuilt
+wheel** from `github.com/state-spaces/mamba`'s releases matching our exact
+torch/cuda/python combo (no local CUDA compilation needed for that one —
+`causal_conv1d` did compile from source, ~1-2 min, no issues once `wheel`
+was actually present). Ran AuM's own official inference notebook (converted
+to `scripts/phase0_aum_vggsound_inference.py`) against the official
+AudioSet→VGGSound checkpoint downloaded via `gdown` from the README's Google
+Drive link: **4/5 (80%) correct** on the 5 sample clips the AuM authors
+bundled in their own repo, with 0.91-0.99 confidence on the correct ones.
+This is NOT a reproduction of their reported 46.78 mAP (that's measured
+over the full VGGSound eval set, not 5 clips, and it's mAP not top-1 acc on
+5 samples — different metric, wildly different N). What it does establish,
+honestly: the model loads with `<All keys matched successfully>`, runs a
+real bidirectional Mamba forward pass, and produces correct, confident
+predictions using the exact checkpoint and preprocessing the authors
+shipped. That's the pipeline-correctness bar Phase 0 needed, even though
+the full dataset-level reproduction gate (within ~1 point of 46.78) is
+still open — would need the actual VGGSound dataset, out of scope for this
+session. Logged honestly as `gate_passed: false` in
+`results/phase0_reproduction.jsonl`, same as the AST/ESC-50 entry.
+
+**Next real step for Phase 0**: decide whether closing the strict
+dataset-level reproduction gate (±1 point on a full eval set, for either
+AST/AudioSet or AuM/VGGSound) is worth the engineering cost of downloading
+one of those full datasets, or whether the two pipeline-correctness checks
+done so far (AST on full ESC-50 modulo leakage, AuM on 5 official samples)
+are sufficient grounds to move on to Phase 1 (length-extended eval sets).
+This is a scope decision for the user, not something to decide unilaterally.
+
 ## 2026-10-01 — Lightning.ai free T4: Phase 0 AST/ESC-50 run, honest result
 
 User had free credits on lightning.ai (5.00 credits in a "default-project"

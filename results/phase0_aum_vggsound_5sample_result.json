@@ -1,0 +1,42 @@
+{
+  "checkpoint": "models/aum-base_audioset-vggsound.pth",
+  "n": 5,
+  "top1_accuracy": 0.8,
+  "results": [
+    {
+      "wav": "data/sample0.wav",
+      "true_label": "snake hissing",
+      "pred_label": "snake hissing",
+      "pred_prob": 0.9910549521446228,
+      "correct": true
+    },
+    {
+      "wav": "data/sample1.wav",
+      "true_label": "cat meowing",
+      "pred_label": "cat meowing",
+      "pred_prob": 0.9255464673042297,
+      "correct": true
+    },
+    {
+      "wav": "data/sample2.wav",
+      "true_label": "owl hooting",
+      "pred_label": "owl hooting",
+      "pred_prob": 0.9975829124450684,
+      "correct": true
+    },
+    {
+      "wav": "data/sample3.wav",
+      "true_label": "telephone bell ringing",
+      "pred_label": "wind chime",
+      "pred_prob": 0.9595537781715393,
+      "correct": false
+    },
+    {
+      "wav": "data/sample4.wav",
+      "true_label": "playing piano",
+      "pred_label": "playing piano",
+      "pred_prob": 0.9093533158302307,
+      "correct": true
+    }
+  ]
+}

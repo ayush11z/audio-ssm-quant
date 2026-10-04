@@ -32,3 +32,4 @@ results/*.pt
 # Secrets
 .env
 *.token
+.claude/
