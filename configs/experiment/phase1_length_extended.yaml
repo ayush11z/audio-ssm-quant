@@ -1,0 +1,40 @@
+# Phase 1: length-extended eval sets + full-precision baselines (brief
+# section 5 / Phase 1). Goal: characterize how much each model degrades
+# with length at full precision -- this defines the "confound" that all
+# later quantization-gap analysis (Phase 3+) must control for.
+defaults:
+  - /task: speech_commands
+  - _self_
+
+seed: 0
+
+# Brief section 5: "roughly 20, 40, 80, and 160 s, as memory allows" --
+# all four kept; 48GB VRAM (RTX A6000) should comfortably hold even the
+# longest AuM reference-scan sequences for single-sample batches.
+extended_lengths_sec: [20, 40, 80, 160]
+native_length_sec: 1.0  # in-distribution baseline, brief section 5
+
+# Brief section 5: "Place the event at the start, middle, or end"
+positions: [start, middle, end]
+
+# Budget-driven subsampling (documented, not hidden): the official test
+# split has ~4890 clips across 35 classes. Full-precision inference across
+# 4 lengths x 3 positions x ~4890 clips is not a sane use of a $2-ish
+# remaining GPU credit balance. Stratified sample instead -- see
+# DECISIONS.md for the exact count chosen and why.
+clips_per_class: 4  # -> ~140 native clips x 13 variants (native + 4x3) = ~1820 eval items
+
+# Background source: the official archive's own _background_noise_ folder
+# (6 recordings: white/pink noise, running tap, etc.) -- brief section 5:
+# "Use low-level noise or a neutral ambient recording... never clips
+# containing other labeled events." Scaled down (see generation script) to
+# stay "low-level" relative to the embedded clip.
+background_scale: 0.1
+
+# AST confound (brief section 5): fixed positional embeddings sized for
+# ~10s input. Decision (see DECISIONS.md): interpolate the positional
+# embedding grid to the longer input's patch grid size, not sliding-window
+# chunking -- simpler to implement consistently and AuM's own codebase
+# already does the analogous thing (FlexiPosEmbed) for its side, so using
+# the same strategy for both models keeps this symmetric.
+ast_long_input_strategy: interpolate

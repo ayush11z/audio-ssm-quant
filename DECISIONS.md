@@ -2,6 +2,83 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-05 — Phase 1 built: length-extended Speech Commands V2, both eval scripts ready (not yet run)
+
+**Task/dataset decision (user approved)**: switched both models to **Speech
+Commands V2** for Phase 1, instead of continuing Phase 0's mismatched
+AST→ESC-50 / AuM→VGGSound pairing. Both AST (`MIT/ast-finetuned-speech-commands-v2`,
+98.12% reported) and AuM (their own "Speech Commands V2" checkpoint, 94.82%
+reported, Base AudioSet variant) have official checkpoints on this exact
+task -- real apples-to-apples, which Phase 0 didn't have. Bonus: native
+clips are ~1s, so a 160s extended clip is a severe state-retention stress
+test, which is exactly what brief section 5 flags as most interesting for
+SSMs specifically.
+
+**Dataset source**: the canonical `google/speech_commands` HF dataset is a
+loading script, no longer supported by current `datasets` (4.5.0) -- raises
+`RuntimeError: Dataset scripts are no longer supported`. A parquet mirror
+(`danjacobellis/speech_commands_v2`) exists and loads fine, but uses
+**alphabetical label ordering**, different from the ordering both AST and
+AuM's checkpoints were actually trained with (AuM's own
+`speechcommands_class_labels_indices.csv` copies AST's convention exactly:
+0=backward, 1=follow, 2=five, 3=bed...). Used the **official source instead**
+(`storage.googleapis.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz`
+-- the same one AuM's own `exps/speechcommands/prep_sc.py` downloads), which
+also ships the official train/test/validation split lists and a
+`_background_noise_` folder used as the Phase 1 background source (brief
+section 5: "low-level noise or a neutral ambient recording... never clips
+containing other labeled events" -- reusing the dataset authors' own
+noise recordings is more faithful than synthesizing something ourselves).
+First download attempt silently truncated (checked file size stabilized,
+assumed done -- wrong; `curl` had been backgrounded without checking its own
+exit code, same mistake as the causal_conv1d install earlier in the
+project). Fixed by re-downloading with `--fail --retry` and actually
+checking the exit code this time.
+
+**Budget-driven subsampling (documented)**: stratified 4 clips/class x 35
+classes = 140 native clips, x (1 native + 4 lengths x 3 positions) = 1820
+total eval items. Full official test split is ~4890 clips; running the full
+set x 4 lengths x 3 positions wasn't a sane use of the ~$2 Thunder Compute
+credit remaining after the idle-instance mistake. 1820 items is still a
+real sample, not a token few-shot check.
+
+**AST's length confound (brief section 5's required decision)**: chose
+**interpolate the positional embeddings**, not sliding-window chunking.
+Checked `transformers` 4.57.1's AST source directly -- `position_embeddings`
+is a plain fixed `nn.Parameter`, no built-in interpolation support (unlike
+some ViT variants). Hand-rolled: bicubic-interpolate the patch-grid portion
+of the position embedding along the time axis only (frequency axis is
+unchanged since num_mel_bins stays 128), keeping the cls/distillation token
+positions as-is. Implemented in `scripts/phase1_ast_eval.py`. AuM doesn't
+need this hand-rolled -- its own codebase already has FlexiPatchEmbed/
+FlexiPosEmbed (confirmed working from the Phase 0 AuM run's own log output:
+"Initializing FlexiPatchEmbed... Loading position embedding!"), so
+`scripts/phase1_aum_eval.py` just passes the right `spectrogram_size` per
+length group at model construction time.
+
+**Bug caught before running anything on GPU** (worth noting since it would
+have silently produced wrong baseline numbers): both checkpoints were
+trained/evaluated on a **fixed 128 mel-frame** native input, zero-padded --
+not whatever frame count a raw ~1s clip naturally produces. Speech Commands
+clips vary slightly under 1s, giving ~98 natural frames, which would have
+used the WRONG (interpolated/mismatched) position embeddings for the
+in-distribution baseline specifically -- the one number every length-
+degradation comparison in Phase 1 is measured relative to. Caught by
+computing the frame-count math by hand before running anything (no torch
+needed for that check) and comparing against AuM's own `audio_length=128`
+eval config. Fixed: both scripts now pad/crop only the native group to 128
+frames; extended-length clips are left at their natural frame count since
+they're exactly the target duration by construction already.
+
+**Status**: dataset built and verified (`results/phase1_eval_manifest.json`,
+1820 entries; spot-checked that embedded clip energy actually lands at the
+intended start/middle/end position, not silence). Both checkpoints
+downloaded (AST via HF Hub, AuM's Speech Commands V2 Base-AudioSet variant
+via gdown). Both eval scripts written and logic-reviewed, but **NOT yet run**
+-- no GPU instance is currently provisioned (deleted the idle one, ~$2
+credit left). `scripts/phase0_setup_env.sh` has the exact working recipe for
+re-provisioning when ready.
+
 ## 2026-10-05 — Thunder Compute instance deleted; left running idle, burned $18 of $20 credit
 
 The RTX A6000 instance from the 2026-10-04 Phase 0 session was left running

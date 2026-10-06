@@ -1,0 +1,34 @@
+# Phase 1 task (decided 2026-10-05): both AST (MIT/ast-finetuned-speech-commands-v2)
+# and AuM (their own "Speech Commands V2" checkpoint) have official
+# checkpoints on this exact task -- true apples-to-apples, unlike Phase 0's
+# mismatched AST/ESC-50 vs AuM/VGGSound. Also a good length-extension stress
+# test: native clips are ~1s, so embedding one in a 160s background is a
+# severe test of SSM state retention (brief section 5's point exactly).
+name: speech_commands_v2
+type: classification
+metric: accuracy
+num_classes: 35
+# Official source -- same one AuM's own exps/speechcommands/prep_sc.py uses,
+# NOT a Hugging Face mirror (HF's "google/speech_commands" is a loading
+# script, no longer supported by current `datasets`; a parquet mirror
+# exists but has a different train/test split than the papers used).
+dataset_url: https://storage.googleapis.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
+# Shared label ordering -- AuM copied this directly from AST's convention,
+# so the same CSV/index scheme works for both models. NOT alphabetical
+# (that's the HF parquet mirror's ordering, which is different and would
+# silently mismatch predictions if used here). Source: AuM repo's own
+# third_party/Audio-Mamba-AuM/exps/speechcommands/data/speechcommands_class_labels_indices.csv
+label_csv: third_party/Audio-Mamba-AuM/exps/speechcommands/data/speechcommands_class_labels_indices.csv
+# Official train/test/validation split lists ship inside the archive
+# (testing_list.txt etc.) -- use those, not a random split, to stay
+# consistent with what the checkpoints were evaluated on originally.
+background_noise_dir: _background_noise_  # inside the extracted archive
+train_length_sec: 1.0  # native clip length; AuM/AST were both evaluated at ~1s (audio_length=128 mel frames)
+preprocessing:
+  num_mel_bins: 128
+  dataset_mean: -6.845978
+  dataset_std: 5.5654526
+  # native target_length (mel frames) for the ~1s clips; Phase 1's extended
+  # lengths need target_length computed per-clip from actual duration, not
+  # this fixed value -- see src/ssmquant/data length-extension code.
+  native_target_length: 128

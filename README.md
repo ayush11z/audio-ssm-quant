@@ -36,6 +36,21 @@ Closing the strict dataset-level gate for either model needs the actual
 full eval set (AudioSet or VGGSound), which is a real scope decision, not
 something to just do.
 
+**Phase 1 is built but not yet run.** Switched both models to Speech
+Commands V2 (both have official checkpoints on this exact task — real
+apples-to-apples, unlike Phase 0's mismatched pairing). Length-extended eval
+set built and verified: 140 native clips × (1 native + 4 lengths × 3
+positions) = 1820 items (`results/phase1_eval_manifest.json`), spliced into
+official `_background_noise_` recordings at start/middle/end of
+20/40/80/160s clips. Both eval scripts written
+(`scripts/phase1_ast_eval.py`, `scripts/phase1_aum_eval.py`) — AST
+interpolates its position embeddings for long inputs (hand-rolled, see
+`DECISIONS.md`), AuM uses its own built-in Flexi resizing. Caught a bug
+before running anything: both checkpoints expect a fixed 128-frame native
+input (zero-padded), not whatever a raw ~1s clip naturally produces — fixed
+in both scripts. Needs a GPU instance to actually run (none currently
+provisioned).
+
 ## Repo layout
 
 ```
@@ -61,8 +76,9 @@ cache/               Cached full-precision outputs/states — gitignored
 - [ ] **Phase 0** — Install `mamba_ssm` + `causal-conv1d` on an A100 node.
       Load AuM + AST checkpoints. Reproduce their reported benchmark numbers
       to within ~1 point. **Blocked on Nautilus/PRP cluster access.**
-- [ ] **Phase 1** — Build length-extended eval sets (lengths × positions).
-      Full-precision baselines for both models at all lengths.
+- [x] **Phase 1 (built, not run)** — Length-extended eval sets built
+      (lengths × positions, Speech Commands V2). Full-precision baseline
+      scripts written for both models. Needs a GPU instance to execute.
 - [ ] **Phase 2** — Fake-quant framework + unit tests; validate reference
       scan against the fused kernel.
 - [ ] **Phase 3** — Standard quantization grid (W8A16, W4A16, W8A8) × both
