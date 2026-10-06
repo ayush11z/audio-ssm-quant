@@ -108,7 +108,15 @@ cache/               Cached full-precision outputs/states — gitignored
       against the fused kernel: max abs diff 3-5e-5 (tolerance 1e-3) at
       both native and extended lengths — safe for Phase 4.
 - [ ] **Phase 3** — Standard quantization grid (W8A16, W4A16, W8A8) × both
-      models × all lengths × 3 calibration seeds.
+      models × all lengths × 3 calibration seeds. Infrastructure done:
+      weight/activation quantization (`src/ssmquant/quant/apply.py`),
+      calibration sets (`results/phase3_calibration_seed{0,1,2}.json`),
+      AST eval script (`scripts/phase3_ast_eval.py`). AuM needed a custom
+      forward reimplementation (`src/ssmquant/models/aum_quantized_mamba.py`)
+      since its fused `BiMambaInnerFn` bypasses `nn.Linear` hooks — gate-
+      validated bit-exact against the real forward pass (max abs diff
+      0.0 at both native and extended lengths; see DECISIONS.md). Grid not
+      yet run.
 - [ ] **Phase 4** — SSM-internal ablations (Δ / A / B,C / h) + state
       divergence logging.
 - [ ] **Phase 5 (stretch)** — Mamba-HuBERT vs. HuBERT on concatenated

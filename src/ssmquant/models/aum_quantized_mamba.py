@@ -74,6 +74,12 @@ def quantized_bimamba_v1_forward(mamba, hidden_states, weight_spec=None, activat
 
     A = -torch.exp(mamba.A_log.float())
     A_b = -torch.exp(mamba.A_b_log.float())
+    # bimamba_type='v1' shares a single D, conv1d, x_proj, dt_proj, out_proj
+    # between the forward and backward scans -- only A differs (A vs A_b).
+    # D_b/conv1d_b/x_proj_b/dt_proj_b only exist for bimamba_type='v2'
+    # (confirmed against BiMambaInnerFn.forward(), which passes the same D
+    # to both selective_scan_cuda.fwd calls) -- using a separate mamba.D_b
+    # here was the Phase 3 gate's first failure (AttributeError).
 
     x, z = xz.chunk(2, dim=1)  # each (batch, d_inner, seqlen)
 
@@ -115,7 +121,7 @@ def quantized_bimamba_v1_forward(mamba, hidden_states, weight_spec=None, activat
         delta_bias=mamba.dt_proj.bias.float(), delta_softplus=True,
     )
     out_z_b = selective_scan_fn(
-        conv1d_out.flip([-1]), delta.flip([-1]), A_b, B.flip([-1]), C.flip([-1]), mamba.D_b.float(),
+        conv1d_out.flip([-1]), delta.flip([-1]), A_b, B.flip([-1]), C.flip([-1]), mamba.D.float(),
         z=z.flip([-1]), delta_bias=mamba.dt_proj.bias.float(), delta_softplus=True,
     )
     out_z = out_z_f + out_z_b.flip([-1])  # (batch, d_inner, seqlen)

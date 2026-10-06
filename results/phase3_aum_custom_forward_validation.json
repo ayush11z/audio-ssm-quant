@@ -1,0 +1,20 @@
+{
+  "tolerance": 0.01,
+  "passed": true,
+  "results": {
+    "native_128": {
+      "target_length": 128,
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "mean_rel_diff": 0.0,
+      "passed": true
+    },
+    "extended_1998": {
+      "target_length": 1998,
+      "max_abs_diff": 0.0,
+      "mean_abs_diff": 0.0,
+      "mean_rel_diff": 0.0,
+      "passed": true
+    }
+  }
+}

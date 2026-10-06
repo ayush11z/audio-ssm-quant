@@ -51,10 +51,48 @@ reused for the original and quantized forward passes within one script.
 **Gate before trusting any Phase 3 AuM number**:
 `scripts/phase3_validate_aum_custom_forward.py` runs the custom forward
 with `activation_spec={"bits": None}` (no quantization at all) and
-compares it against AuM's real fused forward pass on the same input --
-written, not yet run (needs GPU). If this doesn't match within tolerance,
-the reimplementation itself has a bug and nothing built on it can be
-trusted, regardless of what the quantization grid later shows.
+compares it against AuM's real fused forward pass on the same input.
+
+**First GPU run (2026-10-06) found a real bug, not a numerical mismatch**:
+`quantized_bimamba_v1_forward` crashed with
+`AttributeError: 'Mamba' object has no attribute 'D_b'`. Read
+`BiMambaInnerFn.forward()` again at the two `selective_scan_cuda.fwd`
+call sites (lines 500 and 504 of
+`vim-mamba_ssm/mamba_ssm/ops/selective_scan_interface.py`): both the
+forward and backward scan calls pass the *same* `D` tensor. For
+`bimamba_type='v1'`, the forward and backward directions share a single
+`D`, `conv1d`, `x_proj`, `dt_proj`, and `out_proj` -- only `A` differs
+(`A` vs `A_b`). A separate `D_b`/`conv1d_b`/`x_proj_b`/`dt_proj_b` only
+exist for `bimamba_type='v2'` (`mamba_simple.py` lines 139-165, inside
+the `elif bimamba_type == "v2":` branch) -- AuM's checkpoints use v1, so
+these attributes never exist on the real module. Fixed by passing
+`mamba.D.float()` (not `mamba.D_b.float()`) to both scan calls. Caught by
+reading the error (an `AttributeError`, not a silently-wrong number) and
+tracing it back to the source before re-running anything on GPU.
+
+**Process note**: the fix was applied locally but not pushed before a
+second GPU instance was provisioned to re-run the gate -- that instance's
+`git clone` pulled the old (unfixed) code from GitHub and reproduced the
+identical `AttributeError`. Caught immediately from the traceback being
+byte-for-byte the same as the first failure. Fixed by `scp`-ing the
+corrected file directly onto the already-built instance (its venv/build
+step doesn't need to be redone for a pure-Python file change under an
+editable install) rather than re-provisioning again.
+
+**Second GPU run (2026-10-06), after the fix was actually present on the
+instance: PASSED, bit-exact**. `max_abs_diff = 0.0`, `mean_abs_diff = 0.0`,
+`mean_rel_diff = 0.0` at both `native_128` (length 128) and
+`extended_1998` (length 1998) -- not just under the 1e-2 tolerance, but
+exactly zero. This is a meaningfully stronger result than "close enough":
+`quantized_bimamba_v1_forward` with `activation_spec={"bits": None}`
+produces numerically identical output to AuM's real fused
+`BiMambaInnerFn` forward pass, confirming the reimplementation is a
+faithful port, not an approximation. Full output in
+`results/phase3_aum_custom_forward_validation.json`. The AuM
+custom-forward path is now cleared to build the full Phase 3 W8A16/
+W4A16/W8A8 quantization grid on top of (next: `scripts/
+phase3_aum_eval.py`, analogous to the already-written
+`scripts/phase3_ast_eval.py`).
 
 ## 2026-10-06 — Phase 3 infrastructure: apply quantization to real models + calibration set (no GPU needed)
 
