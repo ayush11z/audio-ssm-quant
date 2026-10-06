@@ -2,6 +2,54 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-06 — Phase 3 infrastructure: apply quantization to real models + calibration set (no GPU needed)
+
+`src/ssmquant/quant/apply.py`: applies Phase 2's `fake_quantize` to a real
+model's `nn.Linear` layers specifically -- not the SSM-internal tensors
+(Δ, A/Ā, B, C, h), which are Phase 4's separate ablation target. This split
+is deliberate, not a limitation: brief hypothesis H2 is literally asking
+whether degradation comes from quantizing "ordinary linear-layer weights"
+(Phase 3) vs. "SSM-specific tensors" (Phase 4), so the two have to be
+cleanly separable in the code, not just in the write-up.
+
+**Static vs. dynamic activation quantization** (a real design choice the
+brief's config shape implies but doesn't spell out): weight quantization
+is always static (a tensor's own per-channel max-abs is deterministic, no
+calibration data needed). For activations, `per_tensor` is static --
+calibrated once from a held-out clip set and then frozen for every eval
+batch, which is what makes "3 calibration seeds" (brief section 6)
+meaningful: different seeds draw different calibration subsets, and
+`calibrate_activation_scales` lets that vary. `per_token` is dynamic --
+computed fresh every forward pass from the actual input, since each real
+token's own magnitude is already the tightest possible fit; there's
+nothing a fixed calibration scale would improve, and no principled way to
+"calibrate" a scale for a token position when different eval lengths have
+different numbers of tokens anyway.
+
+`scripts/phase3_build_calibration_set.py`: builds the 256-clip calibration
+sets (brief section 6), one per seed, drawn from the **train** split
+specifically -- kept deliberately separate from Phase 1's eval manifest
+(which samples the **test** split), verified zero overlap by construction.
+Calibration data overlapping eval data would make Phase 6's calibration-
+sensitivity analysis meaningless. Needed to extend the approach slightly:
+only `testing_list.txt`/`validation_list.txt` and the raw `.tar.gz` were
+present locally (the Phase 1 word-folder audio was extracted on the GPU
+instance, not locally) -- rather than re-extracting the full ~85k-file
+train split just to sample from it, the script lists the archive's
+contents directly (`tar -tzf`), samples filenames from that list, then
+extracts only the ~768 actually-needed files in one pass.
+
+9 new unit tests in `tests/test_apply.py` (toy `nn.Sequential`, no GPU, no
+real checkpoint): weight quantization touches every Linear and is a
+true no-op at `bits=None`, per-token activation quantization changes
+output, per-tensor activation quantization correctly requires calibration
+scales (raises otherwise) and runs once given them, hooks remove cleanly,
+calibration scale reflects the magnitudes actually seen.
+
+Not yet run against the real AST/AuM checkpoints or the full quantization
+grid (W8A16/W4A16/W8A8-per-tensor/W8A8-per-token × both models × Phase 1's
+lengths) -- that needs GPU.
+
 ## 2026-10-06 — Phase 2 part 2 RUN: reference scan matches fused kernel, Phase 2 complete
 
 Ran `scripts/phase2_validate_reference_scan.py` on another short Thunder

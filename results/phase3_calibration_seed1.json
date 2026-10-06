@@ -1,0 +1,1026 @@
+[
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/left/d070ea86_nohash_0.wav",
+  "word": "left"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/b69fe0e2_nohash_1.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/yes/ec989d6d_nohash_0.wav",
+  "word": "yes"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/marvin/b4bef564_nohash_0.wav",
+  "word": "marvin"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/cc554de3_nohash_0.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/b4ea0d9a_nohash_0.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/84bf12ff_nohash_0.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/cat/39543cfd_nohash_0.wav",
+  "word": "cat"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/5f8097e1_nohash_1.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/a1e71565_nohash_0.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/ec201020_nohash_4.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/dce05676_nohash_0.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/c33682f0_nohash_0.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/61482e52_nohash_3.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/40738a2d_nohash_1.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/0f7205ef_nohash_0.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/e48a80ed_nohash_0.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/365908bd_nohash_2.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/dog/e1aa22e4_nohash_0.wav",
+  "word": "dog"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/seven/54aecbd5_nohash_1.wav",
+  "word": "seven"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/visual/1ed0b13d_nohash_3.wav",
+  "word": "visual"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/3402e488_nohash_1.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/2fcb6397_nohash_3.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/329eab8a_nohash_2.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/f4c77b26_nohash_0.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/c44d2a58_nohash_1.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/61482e52_nohash_0.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/75b631ff_nohash_0.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/f816db77_nohash_0.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/df1d5024_nohash_0.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/ab9b93e4_nohash_0.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/7a5530c9_nohash_4.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/forward/cd671b5f_nohash_2.wav",
+  "word": "forward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/57de2379_nohash_0.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/3b852f6f_nohash_1.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/611d2b50_nohash_3.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/879a2b38_nohash_2.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/seven/1e9e6bdd_nohash_4.wav",
+  "word": "seven"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/backward/c0cb43d6_nohash_0.wav",
+  "word": "backward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/seven/59c3a7f2_nohash_0.wav",
+  "word": "seven"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/a24582a0_nohash_0.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/99e6cab8_nohash_1.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/94d370bf_nohash_0.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/c71e3acc_nohash_1.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/131e738d_nohash_2.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/f21893dc_nohash_0.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/follow/460209ac_nohash_1.wav",
+  "word": "follow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/99081f4d_nohash_0.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bird/a7200079_nohash_0.wav",
+  "word": "bird"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/happy/7f9eb952_nohash_0.wav",
+  "word": "happy"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/99a9b015_nohash_1.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/76e53db9_nohash_0.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/house/74b73f88_nohash_0.wav",
+  "word": "house"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/144d27ff_nohash_4.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/333784b7_nohash_1.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/3847619e_nohash_1.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bird/650daf8e_nohash_1.wav",
+  "word": "bird"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/b5cf6ea8_nohash_4.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/0f7205ef_nohash_0.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/visual/42a99aec_nohash_2.wav",
+  "word": "visual"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/813b82a6_nohash_1.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/e7ea8b76_nohash_3.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/a1cf7fd8_nohash_3.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/visual/b8874962_nohash_2.wav",
+  "word": "visual"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/f816db77_nohash_1.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/4a1e736b_nohash_1.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/seven/311fde72_nohash_0.wav",
+  "word": "seven"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/978240e1_nohash_2.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/321aba74_nohash_3.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bed/b3327675_nohash_0.wav",
+  "word": "bed"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/down/878befa7_nohash_0.wav",
+  "word": "down"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/27c24504_nohash_0.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/e57abea3_nohash_0.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/050170cb_nohash_3.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/499be02e_nohash_3.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/1e9e6bdd_nohash_4.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/f2e9b610_nohash_1.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/tree/590750e8_nohash_2.wav",
+  "word": "tree"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/bdd22e4d_nohash_3.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/21832144_nohash_4.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/down/b6573c88_nohash_0.wav",
+  "word": "down"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/c351e611_nohash_3.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/9beccfc8_nohash_0.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/cat/0943c746_nohash_0.wav",
+  "word": "cat"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/nine/9e44aca3_nohash_0.wav",
+  "word": "nine"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/616420be_nohash_1.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/0137b3f4_nohash_0.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/learn/18e910f4_nohash_1.wav",
+  "word": "learn"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/0585b66d_nohash_0.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/890cc926_nohash_3.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/follow/0f7266cf_nohash_3.wav",
+  "word": "follow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bed/a2b16113_nohash_0.wav",
+  "word": "bed"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bed/772db621_nohash_0.wav",
+  "word": "bed"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/fb01a182_nohash_0.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/5de3f6cc_nohash_1.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/92a9c5e6_nohash_3.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/51f7a034_nohash_2.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/9e92ef0c_nohash_3.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/0d90d8e1_nohash_1.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/seven/4ec7d027_nohash_0.wav",
+  "word": "seven"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/8e523821_nohash_2.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/b5cf6ea8_nohash_6.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/backward/54ad8f22_nohash_2.wav",
+  "word": "backward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/626e323f_nohash_0.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/down/3d53244b_nohash_3.wav",
+  "word": "down"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/26631bee_nohash_0.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/dog/2275edbb_nohash_0.wav",
+  "word": "dog"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/39833acb_nohash_1.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/f3d06008_nohash_1.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/063d48cf_nohash_2.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/8012c69d_nohash_3.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/bbf38549_nohash_2.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/7e2d5caf_nohash_0.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/617aeb6c_nohash_2.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/7e556a2c_nohash_1.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/042186b8_nohash_0.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/3209ec42_nohash_0.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/nine/a0a8d759_nohash_0.wav",
+  "word": "nine"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/49f30eed_nohash_0.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/down/1ffd513b_nohash_2.wav",
+  "word": "down"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/0b40aa8e_nohash_0.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/2f0ce4d9_nohash_4.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/cb2929ce_nohash_0.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/f15a354c_nohash_0.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/a19452d5_nohash_0.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/eeaf97c3_nohash_0.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/down/07089da9_nohash_1.wav",
+  "word": "down"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/30060aba_nohash_3.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/backward/ee1d8d49_nohash_1.wav",
+  "word": "backward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/8134f43f_nohash_3.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/ffd2ba2f_nohash_3.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/a1cff772_nohash_3.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/c634a189_nohash_1.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/9b02d503_nohash_2.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/house/b6d11c9b_nohash_0.wav",
+  "word": "house"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/6727b579_nohash_3.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/learn/f0659908_nohash_3.wav",
+  "word": "learn"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/82951cf0_nohash_2.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/seven/a1cff772_nohash_2.wav",
+  "word": "seven"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/happy/8f0d3c27_nohash_0.wav",
+  "word": "happy"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bed/62b7c848_nohash_1.wav",
+  "word": "bed"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/5ac04a92_nohash_1.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/visual/03431e13_nohash_0.wav",
+  "word": "visual"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bird/96c66ab7_nohash_0.wav",
+  "word": "bird"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/1e4064b8_nohash_0.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/b414c653_nohash_1.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/marvin/e0611c84_nohash_2.wav",
+  "word": "marvin"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/e1936ce8_nohash_1.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/yes/29fb33da_nohash_4.wav",
+  "word": "yes"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/yes/6272b231_nohash_1.wav",
+  "word": "yes"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/3589bc72_nohash_3.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/513aeddf_nohash_0.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/d78858d9_nohash_2.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/bfa63751_nohash_0.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/seven/3589bc72_nohash_1.wav",
+  "word": "seven"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/dog/0f7205ef_nohash_0.wav",
+  "word": "dog"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/876c84d6_nohash_0.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/e102119e_nohash_0.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bird/5705a0f9_nohash_2.wav",
+  "word": "bird"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/backward/90e72357_nohash_3.wav",
+  "word": "backward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/8dd788d8_nohash_0.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/yes/2cec1d47_nohash_0.wav",
+  "word": "yes"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bed/837f7378_nohash_0.wav",
+  "word": "bed"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/tree/fffcabd1_nohash_1.wav",
+  "word": "tree"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/marvin/c351e611_nohash_0.wav",
+  "word": "marvin"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/forward/113b3fbc_nohash_0.wav",
+  "word": "forward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bed/f7879738_nohash_0.wav",
+  "word": "bed"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/dog/3983ba0d_nohash_0.wav",
+  "word": "dog"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/2bdbe5f7_nohash_0.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/85851131_nohash_3.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/39999a0f_nohash_1.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/cd671b5f_nohash_3.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/cat/446a3161_nohash_0.wav",
+  "word": "cat"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/5a98d407_nohash_2.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/44b9b0c1_nohash_0.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/e882abb2_nohash_0.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/ab76ac76_nohash_0.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/backward/87d5e978_nohash_4.wav",
+  "word": "backward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/9a4d12fd_nohash_1.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bird/88d009d2_nohash_0.wav",
+  "word": "bird"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/marvin/333d7ddb_nohash_0.wav",
+  "word": "marvin"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/3f45a0cf_nohash_4.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/marvin/09ddc105_nohash_0.wav",
+  "word": "marvin"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/87d5e978_nohash_1.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/87d5e978_nohash_0.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/518588b6_nohash_0.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/8ca3b1db_nohash_0.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/6c6aa323_nohash_0.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/7cf14c54_nohash_0.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/3d53244b_nohash_2.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/8442ea62_nohash_1.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/left/7985e718_nohash_0.wav",
+  "word": "left"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/ae71797c_nohash_0.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/tree/8ed25ef8_nohash_0.wav",
+  "word": "tree"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/4d763ca4_nohash_0.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/8281a2a8_nohash_1.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/f2f0d244_nohash_3.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/stop/d070ea86_nohash_1.wav",
+  "word": "stop"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/34e8c726_nohash_0.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/happy/c87a578d_nohash_1.wav",
+  "word": "happy"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/5588c7e6_nohash_0.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/d9b50b8b_nohash_0.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/679463fc_nohash_0.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/676f8138_nohash_2.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/sheila/6e74c582_nohash_2.wav",
+  "word": "sheila"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/c351e611_nohash_4.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/c8db14a8_nohash_0.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/74fc51e5_nohash_0.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/happy/e882abb2_nohash_0.wav",
+  "word": "happy"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/9be15e93_nohash_2.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/nine/f3210686_nohash_1.wav",
+  "word": "nine"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/0d393936_nohash_0.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/9712cce0_nohash_0.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/679463fc_nohash_2.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/nine/e62056e2_nohash_2.wav",
+  "word": "nine"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/71bf8f48_nohash_0.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/yes/6904f0cb_nohash_5.wav",
+  "word": "yes"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/yes/0a396ff2_nohash_0.wav",
+  "word": "yes"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/two/ee1d8d49_nohash_3.wav",
+  "word": "two"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/7f74626f_nohash_1.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/tree/4b3a7ad5_nohash_0.wav",
+  "word": "tree"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/b2ae3928_nohash_3.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/d9aa8c90_nohash_3.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/marvin/1b88bf70_nohash_0.wav",
+  "word": "marvin"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/no/5677ec77_nohash_0.wav",
+  "word": "no"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/d926bb17_nohash_1.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/0135f3f2_nohash_1.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/nine/ea0cf37f_nohash_0.wav",
+  "word": "nine"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/visual/3589bc72_nohash_1.wav",
+  "word": "visual"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/wow/62ccd358_nohash_0.wav",
+  "word": "wow"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/6a497f80_nohash_1.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/right/f618568f_nohash_1.wav",
+  "word": "right"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/bed/462e1919_nohash_1.wav",
+  "word": "bed"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/23da904f_nohash_2.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/0132a06d_nohash_2.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/nine/2cec1d47_nohash_1.wav",
+  "word": "nine"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/3c257192_nohash_3.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/3cfc6b3a_nohash_0.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/backward/9bfd6a9d_nohash_0.wav",
+  "word": "backward"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/6f9088d7_nohash_0.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/91ffb786_nohash_3.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/up/6f342826_nohash_0.wav",
+  "word": "up"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/off/39833acb_nohash_0.wav",
+  "word": "off"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/visual/69a1a79f_nohash_3.wav",
+  "word": "visual"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/go/0f7266cf_nohash_2.wav",
+  "word": "go"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/173e6bbf_nohash_0.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/one/b0f5b16d_nohash_4.wav",
+  "word": "one"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/six/30060aba_nohash_3.wav",
+  "word": "six"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/5fc3ed24_nohash_0.wav",
+  "word": "three"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/four/57152045_nohash_2.wav",
+  "word": "four"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/zero/5588c7e6_nohash_1.wav",
+  "word": "zero"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/eight/3bb68054_nohash_1.wav",
+  "word": "eight"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/house/257251e0_nohash_0.wav",
+  "word": "house"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/on/e32ff49d_nohash_0.wav",
+  "word": "on"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/five/25132942_nohash_2.wav",
+  "word": "five"
+ },
+ {
+  "wav": "data/raw/SpeechCommands/speech_commands_v0.02/three/2f666bb2_nohash_0.wav",
+  "word": "three"
+ }
+]
