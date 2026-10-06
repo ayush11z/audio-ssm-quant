@@ -2,6 +2,68 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-06 — Phase 2 part 1: fake-quant framework + unit tests (done, no GPU needed)
+
+`src/ssmquant/quant/fake_quant.py`: `compute_scale`, `fake_quantize`,
+`fake_quantize_from_spec`. Per brief section 6, this is simulated
+(quantize-then-immediately-dequantize) quantization only -- no real
+int8/int4 storage or kernels, matching "Real integer kernels and speedups
+are out of scope."
+
+**Design choice**: `per_channel` and `per_token` granularity are
+implemented as the *same underlying operation* (max-abs reduced over every
+dim except one kept dim), not two separate code paths. They only differ in
+which dim convention is kept by caller: output-channel dim for weights,
+sequence/token dim for activations. Simpler than maintaining two near-
+identical reduction functions, and makes the one thing that matters (which
+dim is being preserved) explicit at the call site instead of implicit in
+which function name was called.
+
+**Symmetric range**: `qmax = 2**(bits-1) - 1` (e.g. [-127, 127] for int8,
+not [-128, 127]) -- every `configs/quant/*.yaml` sets `symmetric: true`, so
+asymmetric quantization isn't implemented at all; calling it raises
+`NotImplementedError` rather than silently doing the wrong thing.
+
+13 unit tests in `tests/test_fake_quant.py`, all passing locally (no GPU
+needed -- pure tensor ops): exact bit-identical passthrough for `bits=None`,
+hand-computed known-value check, rounding (not truncation) at a
+non-grid-aligned value, clipping (not wraparound) for out-of-range inputs
+against a calibrated scale, per-tensor/per-channel/per-token scale shapes
+and values, monotonic error-vs-bits sanity check, zero-tensor safety, and
+the config-dict wrapper matching direct calls. Removed `tests/test_placeholder.py`
+now that real tests exist.
+
+## 2026-10-06 — Phase 2 part 2: reference-scan-vs-fused-kernel validation script (written, not yet run -- needs GPU)
+
+`scripts/phase2_validate_reference_scan.py`: calls `mamba_ssm`'s
+`selective_scan_fn` (fused CUDA kernel) and `selective_scan_ref` (pure
+PyTorch, hookable) with identical inputs and compares outputs. Brief
+section 7: the fused kernel can't be hooked to read Δ/A/Ā/h mid-scan (what
+Phase 4's SSM-internal ablations need), so the reference scan has to be
+proven numerically equivalent to what the model actually trained/evaluated
+with before any ablation result built on it is trustworthy.
+
+Checked `mamba_ssm==1.1.3.post1`'s actual source (the pinned version from
+Phase 0) directly from GitHub rather than guessing: `selective_scan_fn` and
+`selective_scan_ref` share an identical call signature, so this is a
+straightforward side-by-side comparison, not a reimplementation. Input
+shapes/construction (`d_inner=1536`, `d_state=16`, `A=-exp(A_log)`,
+variable B/C, `delta_softplus=True`) were read directly out of AuM's actual
+Mamba block (`vim-mamba_ssm/mamba_ssm/modules/mamba_simple.py`) rather than
+guessed, so the validation uses realistic dimensions. Tests both AuM's
+native length (128 mel frames) and one of Phase 1's extended lengths
+(1998 frames, the 20s condition) -- Phase 4's ablations need this
+equivalence to hold at every length Phase 1 touched, not just the training
+length. Tolerance 1e-3 max-abs-diff: both paths compute internally in
+fp32 regardless of input dtype (checked in `selective_scan_ref`'s source),
+so this is fp32-vs-fp32 agreement between two implementations of the same
+math, not a precision-mismatch comparison, and a tight tolerance is the
+right bar.
+
+**Not yet run** -- `selective_scan_fn` requires an actual CUDA device with
+the compiled fused kernel (the AuM venv from Phase 0/1), and no GPU
+instance is currently provisioned.
+
 ## 2026-10-06 — Phase 1 RUN: full-precision length degradation, both models, real results
 
 Ran both `scripts/phase1_ast_eval.py` and `scripts/phase1_aum_eval.py` on a
