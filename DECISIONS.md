@@ -2,6 +2,39 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-06 — Phase 2 part 2 RUN: reference scan matches fused kernel, Phase 2 complete
+
+Ran `scripts/phase2_validate_reference_scan.py` on another short Thunder
+Compute RTX A6000 session (~15 min, deleted immediately after). Needed the
+full `third_party/Audio-Mamba-AuM/requirements.txt` installed, not just
+torch/causal_conv1d/mamba_ssm as originally planned: `mamba_ssm`'s own
+`__init__.py` unconditionally imports `MambaLMHeadModel`, which pulls in
+`transformers.generation.GreedySearchDecoderOnlyOutput` -- a class that no
+longer exists in whatever `transformers` version pip resolves without the
+pin, since it was removed/renamed upstream. The pinned `transformers==4.35.2`
+(from AuM's own requirements.txt) still has it. Same root cause as the
+numpy issue hit earlier in the project: unpinned transitive dependencies
+of an old, pinned package drift out from under it.
+
+**Result**:
+
+| | seqlen | max abs diff | mean abs diff | mean rel diff |
+|---|---|---|---|---|
+| native | 128 | 3.05e-5 | 2.60e-7 | 1.39e-6 |
+| extended | 1998 | 4.96e-5 | 2.64e-7 | 1.30e-6 |
+
+Both ~20x inside the 1e-3 tolerance. Critically, the error does **not**
+grow meaningfully between 128 and 1998 timesteps (15.6x more recurrence
+steps, <2x more error) -- no evidence of the reference scan accumulating
+floating-point error differently than the fused kernel over long
+sequences. **The reference scan is safe to use for Phase 4's
+SSM-internal-tensor hooking (Δ/A/Ā/h) at every length Phase 1 used.**
+
+**Phase 2 is now fully done**: fake-quant framework + 13 passing unit
+tests (no GPU needed), and the reference-scan-vs-fused-kernel validation
+(GPU, now run and passed). Ready for Phase 3 (standard quantization grid)
+whenever the user wants to proceed.
+
 ## 2026-10-06 — Phase 2 part 1: fake-quant framework + unit tests (done, no GPU needed)
 
 `src/ssmquant/quant/fake_quant.py`: `compute_scale`, `fake_quantize`,

@@ -1,0 +1,18 @@
+{
+  "tolerance": 0.001,
+  "passed": true,
+  "results": {
+    "native_128": {
+      "seqlen": 128,
+      "max_abs_diff": 3.0517578125e-05,
+      "mean_abs_diff": 2.597580532892607e-07,
+      "mean_rel_diff": 1.3869115491615958e-06
+    },
+    "extended_1998": {
+      "seqlen": 1998,
+      "max_abs_diff": 4.9591064453125e-05,
+      "mean_abs_diff": 2.641946252879279e-07,
+      "mean_rel_diff": 1.3042752016190207e-06
+    }
+  }
+}

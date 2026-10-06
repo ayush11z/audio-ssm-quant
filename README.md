@@ -64,15 +64,15 @@ wrong numbers without erroring). The full 4-clips/class design
 (`results/phase1_eval_manifest.json`, 1820 items) is built and ready if
 more GPU budget shows up later for tighter confidence intervals.
 
-**Phase 2 is partially done.** The fake-quant (quantize-dequantize)
-framework is written and unit-tested (`src/ssmquant/quant/fake_quant.py`,
-13 passing tests, no GPU needed) — symmetric per-tensor/per-channel/per-token
-quantization with a verified bit-identical full-precision passthrough. The
-second half (validate that `mamba_ssm`'s hookable pure-PyTorch reference
-scan matches its fused CUDA kernel numerically, which Phase 4's
-SSM-internal ablations depend on) is written
-(`scripts/phase2_validate_reference_scan.py`) but not yet run — needs a
-GPU instance.
+**Phase 2 is done.** The fake-quant (quantize-dequantize) framework is
+written and unit-tested (`src/ssmquant/quant/fake_quant.py`, 13 passing
+tests) — symmetric per-tensor/per-channel/per-token quantization with a
+verified bit-identical full-precision passthrough. The reference-scan-vs-
+fused-kernel validation (`scripts/phase2_validate_reference_scan.py`,
+needed before Phase 4's SSM-internal ablations can hook Δ/A/Ā/h) ran clean:
+max abs diff 3-5e-5 against a 1e-3 tolerance, at both native (128) and
+extended (1998) sequence lengths, with no meaningful error growth between
+them. The reference scan is safe to use for Phase 4.
 
 ## Repo layout
 
@@ -103,10 +103,10 @@ cache/               Cached full-precision outputs/states — gitignored
       Speech Commands V2). Full-precision baselines run for both models
       (budget-scoped sample): AuM collapses to near-chance by 20s past
       training length, AST degrades much more gradually.
-- [x] **Phase 2 (partial)** — Fake-quant framework + 13 passing unit tests
-      done (`src/ssmquant/quant/fake_quant.py`). Reference-scan-vs-fused-
-      kernel validation script written (`scripts/phase2_validate_reference_scan.py`)
-      but not yet run — needs a GPU instance.
+- [x] **Phase 2** — Fake-quant framework + 13 passing unit tests
+      (`src/ssmquant/quant/fake_quant.py`). Reference scan validated
+      against the fused kernel: max abs diff 3-5e-5 (tolerance 1e-3) at
+      both native and extended lengths — safe for Phase 4.
 - [ ] **Phase 3** — Standard quantization grid (W8A16, W4A16, W8A8) × both
       models × all lengths × 3 calibration seeds.
 - [ ] **Phase 4** — SSM-internal ablations (Δ / A / B,C / h) + state
