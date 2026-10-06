@@ -34,8 +34,16 @@ LABEL_CSV = ROOT / "third_party" / "Audio-Mamba-AuM" / "exps" / "speechcommands"
 RESULTS_PATH = ROOT / "results" / f"phase1_ast_full_precision{_MANIFEST_SUFFIX}.jsonl"
 
 NUM_MEL_BINS = 128
-PATCH_SIZE = 16
-STRIDE = 16
+# Set from the actual loaded checkpoint's config in main() -- do NOT
+# hardcode these. This checkpoint (MIT/ast-finetuned-speech-commands-v2)
+# uses frequency_stride=time_stride=10 (overlapping patches, the original
+# AST paper's convention), NOT stride=patch_size=16 like AuM's
+# non-overlapping convention. Mixing the two silently breaks the
+# position-embedding grid math (caught via a reshape size-mismatch
+# RuntimeError before any wrong numbers were produced).
+PATCH_SIZE = None
+FREQ_STRIDE = None
+TIME_STRIDE = None
 
 
 def mid_to_word():
@@ -49,7 +57,12 @@ def mid_to_word():
 
 
 def compute_fbank(wav_path, extractor_mean, extractor_std, pad_to_frames=None):
-    waveform, sr = torchaudio.load(str(ROOT / wav_path))
+    # Decode with soundfile, not torchaudio.load: newer torchaudio routes
+    # .load() through torchcodec, which needs system FFmpeg/NVIDIA NPP
+    # shared libraries not present on this Studio (same issue hit and
+    # worked around in Phase 0 -- see DECISIONS.md).
+    audio, sr = sf.read(str(ROOT / wav_path), dtype="float32")
+    waveform = torch.from_numpy(audio).unsqueeze(0)
     waveform = waveform - waveform.mean()
     fbank = torchaudio.compliance.kaldi.fbank(
         waveform,
@@ -78,7 +91,7 @@ def compute_fbank(wav_path, extractor_mean, extractor_std, pad_to_frames=None):
 
 
 def time_out_dim(n_frames):
-    return (n_frames - PATCH_SIZE) // STRIDE + 1
+    return (n_frames - PATCH_SIZE) // TIME_STRIDE + 1
 
 
 def interpolated_position_embeddings(base_pos_embed, base_time_dim, freq_dim, new_time_dim):
@@ -96,17 +109,27 @@ def interpolated_position_embeddings(base_pos_embed, base_time_dim, freq_dim, ne
 
 
 def main():
+    global PATCH_SIZE, FREQ_STRIDE, TIME_STRIDE
     device = "cuda" if torch.cuda.is_available() else "cpu"
     model = ASTForAudioClassification.from_pretrained(CHECKPOINT).to(device).eval()
     extractor = ASTFeatureExtractor.from_pretrained(CHECKPOINT)
     ext_mean, ext_std = extractor.mean, extractor.std
 
-    id2label = model.config.id2label
-    label2id = {v: int(k) for k, v in id2label.items()}
+    # Pull patch geometry from the actual loaded config -- do not assume
+    # AuM's non-overlapping stride=patch_size convention (see comment at
+    # module top; this checkpoint uses stride=10 < patch_size=16).
+    PATCH_SIZE = model.config.patch_size
+    FREQ_STRIDE = model.config.frequency_stride
+    TIME_STRIDE = model.config.time_stride
+
+    # transformers normalizes id2label keys to int after from_pretrained()
+    # (raw config.json on disk has string keys; loaded config has int keys)
+    # -- normalize to str here so lookups below are consistent either way.
+    id2label = {str(k): v for k, v in model.config.id2label.items()}
     mid2word = mid_to_word()
 
-    base_freq_dim = (NUM_MEL_BINS - PATCH_SIZE) // STRIDE + 1
-    base_time_dim = (model.config.max_length - PATCH_SIZE) // STRIDE + 1
+    base_freq_dim = (NUM_MEL_BINS - PATCH_SIZE) // FREQ_STRIDE + 1
+    base_time_dim = (model.config.max_length - PATCH_SIZE) // TIME_STRIDE + 1
     base_pos_embed = model.audio_spectrogram_transformer.embeddings.position_embeddings.data.clone()
     print(f"Base grid: freq={base_freq_dim} time={base_time_dim} "
           f"(native max_length={model.config.max_length})")

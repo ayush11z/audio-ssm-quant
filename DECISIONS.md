@@ -2,6 +2,79 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-06 — Phase 1 RUN: full-precision length degradation, both models, real results
+
+Ran both `scripts/phase1_ast_eval.py` and `scripts/phase1_aum_eval.py` on a
+fresh Thunder Compute RTX A6000, budget-scoped to 1 clip/class
+(`PHASE1_CLIPS_PER_CLASS=1`, 455 items) to fit the ~$2 credit remaining
+after the earlier idle-instance mistake. Total GPU session: ~25 minutes,
+instance deleted immediately after (see [[feedback_stop_idle_cloud_gpu_instances]]
+-- this time done right).
+
+**Headline result** (top-1 accuracy, `results/phase1_ast_full_precision_1pc.jsonl`,
+`results/phase1_aum_full_precision_1pc.jsonl`):
+
+| Length | AST (Transformer) | AuM (Mamba SSM) |
+|---|---|---|
+| native (~1s) | 100.0% (35/35) | 100.0% (35/35) |
+| 20s | 68.6% (72/105) | 11.4% (12/105) |
+| 40s | 36.2% (38/105) | 4.8% (5/105) |
+| 80s | 14.3% (15/105) | 8.6% (9/105) |
+| 160s | 7.6% (8/105) | 7.6% (8/105) |
+
+**This is the core Phase 1 finding the brief asked for**: AuM collapses
+almost immediately once extended past training length (100% -> 11% at just
+20s, barely above the 2.9% chance rate for 35-way classification), while
+AST degrades much more gradually (100% -> 69% -> 36% -> 14% -> 8%). This is
+**full precision, no quantization applied yet** -- exactly the "confound"
+Phase 1 exists to characterize, and it's a strong, real signal in the
+direction the brief's cited prior work predicted (Mamba degrades past
+training length more severely than transformers). Both models converge to
+roughly the same near-chance accuracy by 160s, meaning there's a real floor
+in both architectures, but AuM hits it almost immediately while AST takes
+much longer.
+
+**Position breakdown** (start/middle/end, n~12/cell -- small, noisy,
+reported as suggestive not conclusive given the budget-constrained sample):
+AST shows a fairly consistent start > middle/end pattern at 40s and 80s
+(e.g. 80s: start=26% vs middle=end=9%), plausibly because the
+bicubic-interpolated position embeddings are least distorted near the
+sequence boundary closest to the original pretrained range. AuM shows no
+clear position pattern -- all cells are low (0-17%) with no consistent
+ordering, consistent with it having already lost most usable signal
+regardless of where the event sits.
+
+**Real bugs hit and fixed during this run** (all before producing any final
+numbers, not after):
+1. `torchaudio.load()` in the AST script hit the same torchcodec/FFmpeg-NPP
+   shared library issue as Phase 0's Lightning.ai run -- fixed the same
+   way, decode with `soundfile` directly instead.
+2. `model.config.id2label` has **int** keys after `from_pretrained()` loads
+   it (raw `config.json` on disk has string keys, but transformers
+   normalizes them to int on load) -- a `str(pred_id)` lookup threw
+   `KeyError`. Fixed by normalizing `id2label` to str keys once up front.
+3. **The real one**: hardcoded `PATCH_SIZE=STRIDE=16` (AuM's non-overlapping
+   patch convention) for AST's position-embedding grid math, but
+   `MIT/ast-finetuned-speech-commands-v2` actually uses
+   `frequency_stride=time_stride=10` (overlapping patches, the original AST
+   paper's convention) -- a different hyperparameter choice than AuM's
+   checkpoint even though they share the same label ordering. This produced
+   a silent shape mismatch (`RuntimeError: shape '[1,8,8,768]' invalid for
+   input of size 110592`) rather than silently wrong numbers, which is why
+   it got caught before any numbers were trusted. Fixed by reading
+   `patch_size`/`frequency_stride`/`time_stride` from the actual loaded
+   model config instead of hardcoding them -- never assume two checkpoints
+   from different authors share patch geometry just because they share a
+   label scheme.
+
+**Status**: Phase 1's full-precision baseline requirement (brief: "Run both
+models at full precision across all lengths. Gate: report how much each
+model degrades with length") is now satisfied, on the budget-scoped 1
+clip/class sample. The full 4 clips/class design (`results/phase1_eval_manifest.json`,
+1820 items, built but not run) remains available if more GPU budget shows
+up later and tighter confidence intervals are wanted -- the 1/class result
+already shows a large, clear effect, so this isn't blocking Phase 2.
+
 ## 2026-10-05 — Phase 1 built: length-extended Speech Commands V2, both eval scripts ready (not yet run)
 
 **Task/dataset decision (user approved)**: switched both models to **Speech

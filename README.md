@@ -36,20 +36,33 @@ Closing the strict dataset-level gate for either model needs the actual
 full eval set (AudioSet or VGGSound), which is a real scope decision, not
 something to just do.
 
-**Phase 1 is built but not yet run.** Switched both models to Speech
-Commands V2 (both have official checkpoints on this exact task — real
-apples-to-apples, unlike Phase 0's mismatched pairing). Length-extended eval
-set built and verified: 140 native clips × (1 native + 4 lengths × 3
-positions) = 1820 items (`results/phase1_eval_manifest.json`), spliced into
-official `_background_noise_` recordings at start/middle/end of
-20/40/80/160s clips. Both eval scripts written
-(`scripts/phase1_ast_eval.py`, `scripts/phase1_aum_eval.py`) — AST
-interpolates its position embeddings for long inputs (hand-rolled, see
-`DECISIONS.md`), AuM uses its own built-in Flexi resizing. Caught a bug
-before running anything: both checkpoints expect a fixed 128-frame native
-input (zero-padded), not whatever a raw ~1s clip naturally produces — fixed
-in both scripts. Needs a GPU instance to actually run (none currently
-provisioned).
+**Phase 1 is done — full-precision length-degradation baselines for both
+models, real results.** Switched both models to Speech Commands V2 (both
+have official checkpoints on this exact task — real apples-to-apples,
+unlike Phase 0's mismatched pairing). Length-extended eval set built and
+verified, spliced into official `_background_noise_` recordings at
+start/middle/end of 20/40/80/160s clips. Ran a budget-scoped sample
+(1 clip/class, 455 items) on a Thunder Compute RTX A6000:
+
+| Length | AST (Transformer) | AuM (Mamba SSM) |
+|---|---|---|
+| native | 100.0% | 100.0% |
+| 20s | 68.6% | 11.4% |
+| 40s | 36.2% | 4.8% |
+| 80s | 14.3% | 8.6% |
+| 160s | 7.6% | 7.6% |
+
+**AuM collapses almost immediately past training length (100%→11% at just
+20s); AST degrades far more gradually.** This is full precision, no
+quantization yet — exactly the "confound" Phase 1 exists to characterize,
+and it's a real, strong signal in the direction the brief's cited prior
+work predicted. See `DECISIONS.md` for the position-level breakdown and
+three real bugs caught before trusting any of these numbers (most notably:
+AST's actual checkpoint uses overlapping patches, stride=10, not AuM's
+stride=16 convention — silently assuming they matched would have produced
+wrong numbers without erroring). The full 4-clips/class design
+(`results/phase1_eval_manifest.json`, 1820 items) is built and ready if
+more GPU budget shows up later for tighter confidence intervals.
 
 ## Repo layout
 
@@ -76,9 +89,10 @@ cache/               Cached full-precision outputs/states — gitignored
 - [ ] **Phase 0** — Install `mamba_ssm` + `causal-conv1d` on an A100 node.
       Load AuM + AST checkpoints. Reproduce their reported benchmark numbers
       to within ~1 point. **Blocked on Nautilus/PRP cluster access.**
-- [x] **Phase 1 (built, not run)** — Length-extended eval sets built
-      (lengths × positions, Speech Commands V2). Full-precision baseline
-      scripts written for both models. Needs a GPU instance to execute.
+- [x] **Phase 1** — Length-extended eval sets built (lengths × positions,
+      Speech Commands V2). Full-precision baselines run for both models
+      (budget-scoped sample): AuM collapses to near-chance by 20s past
+      training length, AST degrades much more gradually.
 - [ ] **Phase 2** — Fake-quant framework + unit tests; validate reference
       scan against the fused kernel.
 - [ ] **Phase 3** — Standard quantization grid (W8A16, W4A16, W8A8) × both
