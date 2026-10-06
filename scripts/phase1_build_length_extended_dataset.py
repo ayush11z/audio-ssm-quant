@@ -20,6 +20,7 @@ no torch needed.
 """
 import csv
 import json
+import os
 import random
 from pathlib import Path
 
@@ -29,14 +30,18 @@ import soundfile as sf
 ROOT = Path(__file__).resolve().parent.parent
 RAW = ROOT / "data" / "raw" / "SpeechCommands" / "speech_commands_v0.02"
 OUT_DIR = ROOT / "data" / "processed" / "phase1_speech_commands"
-MANIFEST_PATH = ROOT / "results" / "phase1_eval_manifest.json"
+# Separate manifest filename when CLIPS_PER_CLASS is overridden via env var,
+# so a budget-constrained run (see DECISIONS.md) doesn't silently clobber
+# the full-design manifest.
+_MANIFEST_SUFFIX = "" if "PHASE1_CLIPS_PER_CLASS" not in os.environ else f"_{os.environ['PHASE1_CLIPS_PER_CLASS']}pc"
+MANIFEST_PATH = ROOT / "results" / f"phase1_eval_manifest{_MANIFEST_SUFFIX}.json"
 LABEL_CSV = ROOT / "third_party" / "Audio-Mamba-AuM" / "exps" / "speechcommands" / "data" / "speechcommands_class_labels_indices.csv"
 
 SR = 16000
 NATIVE_LENGTH_SEC = 1.0
 EXTENDED_LENGTHS_SEC = [20, 40, 80, 160]
 POSITIONS = ["start", "middle", "end"]
-CLIPS_PER_CLASS = 4
+CLIPS_PER_CLASS = int(os.environ.get("PHASE1_CLIPS_PER_CLASS", 4))
 BACKGROUND_SCALE = 0.1
 SEED = 0
 

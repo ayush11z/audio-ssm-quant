@@ -15,6 +15,7 @@ Run on a GPU instance (CUDA not required but recommended for speed with
 160s clips): `python scripts/phase1_ast_eval.py`
 """
 import json
+import os
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -27,9 +28,10 @@ from transformers import ASTFeatureExtractor, ASTForAudioClassification
 
 ROOT = Path(__file__).resolve().parent.parent
 CHECKPOINT = "MIT/ast-finetuned-speech-commands-v2"
-MANIFEST_PATH = ROOT / "results" / "phase1_eval_manifest.json"
+_MANIFEST_SUFFIX = "" if "PHASE1_CLIPS_PER_CLASS" not in os.environ else f"_{os.environ['PHASE1_CLIPS_PER_CLASS']}pc"
+MANIFEST_PATH = ROOT / "results" / f"phase1_eval_manifest{_MANIFEST_SUFFIX}.json"
 LABEL_CSV = ROOT / "third_party" / "Audio-Mamba-AuM" / "exps" / "speechcommands" / "data" / "speechcommands_class_labels_indices.csv"
-RESULTS_PATH = ROOT / "results" / "phase1_ast_full_precision.jsonl"
+RESULTS_PATH = ROOT / "results" / f"phase1_ast_full_precision{_MANIFEST_SUFFIX}.jsonl"
 
 NUM_MEL_BINS = 128
 PATCH_SIZE = 16

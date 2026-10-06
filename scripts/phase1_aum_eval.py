@@ -19,6 +19,7 @@ third_party/Audio-Mamba-AuM/ so its relative imports resolve:
 """
 import csv
 import json
+import os
 import sys
 import time
 from collections import defaultdict
@@ -38,8 +39,9 @@ PROJECT_ROOT = ROOT.parent.parent  # back to the repo root, where results/ and d
 # consistency across phases.
 CHECKPOINT_PATH = "exps/speechcommands/models/aum-base_audioset-spc_v2.pth"
 LABEL_CSV = "exps/speechcommands/data/speechcommands_class_labels_indices.csv"
-MANIFEST_PATH = PROJECT_ROOT / "results" / "phase1_eval_manifest.json"
-RESULTS_PATH = PROJECT_ROOT / "results" / "phase1_aum_full_precision.jsonl"
+_MANIFEST_SUFFIX = "" if "PHASE1_CLIPS_PER_CLASS" not in os.environ else f"_{os.environ['PHASE1_CLIPS_PER_CLASS']}pc"
+MANIFEST_PATH = PROJECT_ROOT / "results" / f"phase1_eval_manifest{_MANIFEST_SUFFIX}.json"
+RESULTS_PATH = PROJECT_ROOT / "results" / f"phase1_aum_full_precision{_MANIFEST_SUFFIX}.jsonl"
 
 NUM_MEL_BINS = 128
 DATASET_MEAN = -6.845978  # from AuM's exps/speechcommands/aum_eval.sh, NOT the AudioSet stats used in Phase 0
