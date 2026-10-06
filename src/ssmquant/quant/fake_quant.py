@@ -30,7 +30,16 @@ def compute_scale(tensor: torch.Tensor, bits: int, granularity: str = "per_tenso
     if granularity == "per_tensor":
         amax = tensor.detach().abs().max()
     elif granularity in ("per_channel", "per_token"):
-        reduce_dims = [d for d in range(tensor.dim()) if d != dim]
+        # Normalize a negative dim (e.g. -2, used for activations whose
+        # rank varies by call site -- AST's are 3D (batch,seq,hidden), but
+        # AuM's Mamba blocks reshape to 2D (batch*seq,hidden) before some
+        # Linear calls) to its positive equivalent BEFORE building
+        # reduce_dims. Comparing a negative dim against range(tensor.dim())
+        # (always non-negative) would never match, silently reducing over
+        # every dim instead of keeping one -- caught in Phase 3 before any
+        # GPU run, see DECISIONS.md.
+        norm_dim = dim if dim >= 0 else tensor.dim() + dim
+        reduce_dims = [d for d in range(tensor.dim()) if d != norm_dim]
         amax = tensor.detach().abs().amax(dim=reduce_dims, keepdim=True) if reduce_dims else tensor.detach().abs()
     else:
         raise ValueError(f"unknown granularity: {granularity!r}")

@@ -107,6 +107,31 @@ def test_per_token_scale_varies_per_token_position():
     assert scale[0, 1, 0] > scale[0, 0, 0]
 
 
+def test_negative_dim_is_normalized_not_silently_wrong():
+    """Regression test: dim=-2 must behave identically to its positive
+    equivalent, not silently reduce over every dim. `d != dim` comparing a
+    negative dim against range(tensor.dim()) (always non-negative) would
+    never match, collapsing per_token/per_channel to per_tensor behavior
+    without erroring -- caught in Phase 3 (AuM's Mamba blocks pass dim=-2
+    for 2D (batch*seq, hidden) activations) before any GPU run."""
+    x = torch.zeros(2, 5, 16)
+    x[:, 0, :] = 1.0
+    x[:, 1, :] = 50.0
+    scale_positive = compute_scale(x, bits=8, granularity="per_token", dim=1)
+    scale_negative = compute_scale(x, bits=8, granularity="per_token", dim=-2)
+    assert torch.equal(scale_positive, scale_negative)
+    assert scale_negative.shape == (1, 5, 1)  # not collapsed to a scalar
+
+    # Also check the 2D case AuM's reshaped activations actually use:
+    # (batch*seq, hidden) with dim=-2 == dim=0.
+    x2 = torch.zeros(10, 16)
+    x2[0, :] = 1.0
+    x2[1, :] = 50.0
+    scale_2d = compute_scale(x2, bits=8, granularity="per_token", dim=-2)
+    assert scale_2d.shape == (10, 1)
+    assert scale_2d[1, 0] > scale_2d[0, 0]
+
+
 def test_quantized_values_within_representable_range():
     """The dequantized output must never exceed qmax*scale in magnitude,
     for any bit width, regardless of input magnitude."""
