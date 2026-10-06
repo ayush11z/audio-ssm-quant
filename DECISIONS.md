@@ -2,6 +2,60 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-06 — AuM's fused forward bypasses nn.Linear hooks; wrote a custom forward instead
+
+Before writing `scripts/phase3_aum_eval.py`, traced through AuM's actual
+`Mamba.forward()` (bimamba_type='v1', what AuM's "Fo-Bi" checkpoints use)
+line by line. Found that `in_proj`, `x_proj`, `dt_proj`, and `out_proj` are
+all invoked via raw `.weight` matmuls or a single fused autograd Function
+(`BiMambaInnerFn`), never via `nn.Linear.__call__`/`.forward()`. This means
+`src/ssmquant/quant/apply.py`'s `ActivationFakeQuantHooks`
+(forward_pre_hooks on `nn.Linear`) -- which works correctly for AST --
+**never fires for AuM**, silently. No error, no warning: "quantized"
+activations would have been bit-identical to full precision, which is
+exactly the kind of fabricated-looking result the brief explicitly warns
+against (section 12). Caught by reading the code, before any GPU run.
+
+**Why the obvious fix (force AuM's "slow path", which does call some
+Linear modules properly) doesn't work**: read that branch too -- it only
+implements single-direction Mamba. It never references `A_b`/`conv1d_b`/
+`x_proj_b`, so forcing it would silently drop the bidirectional half of
+AuM's actual trained checkpoint. Not a viable option.
+
+**What we did instead** (user confirmed: write a custom forward, not scope
+down to AST-only): read `BiMambaInnerFn.forward()` directly (it's a ViM
+addition, not in upstream `state-spaces/mamba`, so not something `pip
+show`/docs would surface) to get the *exact* algorithm, then reimplemented
+it in `src/ssmquant/models/aum_quantized_mamba.py`
+(`quantized_bimamba_v1_forward`) with `fake_quantize` calls inserted at the
+four real activation entry points (input to in_proj/x_proj/dt_proj/
+out_proj). The scan itself still uses the real `selective_scan_fn` (fused
+kernel, already validated against the reference scan in Phase 2) --
+unchanged, since Phase 3 quantizes ordinary linear layers only; Δ/A/Ā/h
+are Phase 4's separate ablation target (this split is the literal point of
+brief hypothesis H2, not an implementation inconvenience).
+
+**Per-call-site dimension care**: each of the four activation tensors has
+a *different* shape convention at the point it's quantized -- e.g.
+`hidden_states` going into `in_proj` is `(batch, seqlen, d_model)` (token
+dim = -2), but `conv1d_out` going into `x_proj` is `(batch, d_inner,
+seqlen)` (token dim = -1, channel-first). Assuming a single dim convention
+across all four would have been wrong for at least two of them; each is
+checked against its own actual shape in the code, not copy-pasted.
+
+`patch_model_for_quantized_forward`/`unpatch_model` monkey-patch each
+`Block.mixer.forward` in-place (temporarily) rather than subclassing or
+editing the vendored AuM repo, so the same `AudioMamba` instance can be
+reused for the original and quantized forward passes within one script.
+
+**Gate before trusting any Phase 3 AuM number**:
+`scripts/phase3_validate_aum_custom_forward.py` runs the custom forward
+with `activation_spec={"bits": None}` (no quantization at all) and
+compares it against AuM's real fused forward pass on the same input --
+written, not yet run (needs GPU). If this doesn't match within tolerance,
+the reimplementation itself has a bug and nothing built on it can be
+trusted, regardless of what the quantization grid later shows.
+
 ## 2026-10-06 — Phase 3 infrastructure: apply quantization to real models + calibration set (no GPU needed)
 
 `src/ssmquant/quant/apply.py`: applies Phase 2's `fake_quantize` to a real
