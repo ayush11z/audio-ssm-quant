@@ -2,6 +2,24 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-05 — Thunder Compute instance deleted; left running idle, burned $18 of $20 credit
+
+The RTX A6000 instance from the 2026-10-04 Phase 0 session was left running
+(not stopped) across a roughly day-long gap with no active work. Thunder
+Compute bills per hour regardless of utilization, and the $20 free credit
+dropped to $2.07 almost entirely from idle time, not actual compute use.
+Deleted the instance (`tnr delete 0 -y`) to stop further billing.
+
+**Lesson for future sessions**: always `tnr delete <id>` (or the
+equivalent stop/delete on whatever provider is in use) at the end of an
+active work session, not just when "done with the project" — idle GPU time
+costs the same as busy GPU time. Nothing is lost by deleting: the verified
+working setup recipe lives in `scripts/phase0_setup_env.sh` and
+`scripts/phase0_aum_vggsound_inference.py`, so a fresh instance just re-runs
+that script rather than needing to rediscover any of it. Re-provisioning
+a new Thunder Compute instance takes a few minutes; the $2.07 remaining
+buys roughly 6 more hours on the A6000 at $0.35/hr.
+
 ## 2026-10-04 — mamba_ssm pipeline verified working end-to-end on Thunder Compute RTX A6000
 
 **The big blocker since Phase 0 started is resolved**: the full `mamba_ssm`
