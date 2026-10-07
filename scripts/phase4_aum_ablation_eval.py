@@ -148,6 +148,15 @@ def main():
     by_length = defaultdict(list)
     for item in manifest:
         by_length[item["length_sec"]].append(item)
+    # Subsample to a fixed count per length group, independent of the
+    # manifest's own per-class clip count -- the step-loop scan's real
+    # per-clip cost (measured by the Phase 4 gate: 85.68s/clip at 160s)
+    # makes the manifest's full clip counts (35-105/length) take ~56hr
+    # for the full 12-condition grid. Deliberately not stratified by
+    # class like Phase 1/3's manifests -- this is a cost-scoped accuracy
+    # read plus divergence curves, not a class-balanced evaluation.
+    clips_per_length = int(os.environ.get("PHASE4_CLIPS_PER_LENGTH", 5))
+    by_length = {length: items[:clips_per_length] for length, items in by_length.items()}
     length_order = sorted(by_length.items(), key=lambda kv: (kv[0] != "native", kv[0]))
 
     calib_fbanks = load_calibration_fbanks(CALIBRATION_SEED, device)
