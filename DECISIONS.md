@@ -2,6 +2,96 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-06 — Phase 3 grid run (budget-scoped): two data gaps, one process
+mistake, and an honest floor-effect finding
+
+**Pre-run validation**: re-ran `scripts/phase3_validate_aum_custom_forward.py`
+on a fresh GPU instance after refactoring `aum_quantized_mamba.py` (factored
+the forward into `_bimamba_v1_forward_core`, added static per-tensor
+calibration support -- `calibrate_bimamba_v1_scales`/
+`calibrate_bimamba_v1_scales_by_index`/`apply_bimamba_v1_scales_by_index`,
+since the generic hook-based `calibrate_activation_scales` can't observe
+AuM's Mamba-internal activations either, same bypass as before). Still
+**PASSED, bit-exact** (`max_abs_diff = 0.0` at both native and extended
+lengths) -- the refactor didn't change behavior.
+
+**Two data-availability gaps found and fixed, both from `data/` being
+gitignored** (correctly -- `data/processed/` alone is 3.8GB, far too large
+for git): a fresh GPU clone has the code but none of the actual audio.
+1. `scripts/phase3_ast_eval.py`/`phase3_aum_eval.py` read
+   `results/phase1_eval_manifest_1pc.json`'s referenced clips from
+   `data/processed/phase1_speech_commands/` -- missing. Fixed by tarring
+   just the ~1GB the 1pc manifest actually references (not the full
+   3.8GB directory) and scp'ing that over.
+2. The W8A8-per_tensor conditions' calibration step reads
+   `results/phase3_calibration_seed{0,1,2}.json`'s clips from
+   `data/raw/SpeechCommands/speech_commands_v0.02/` -- also missing,
+   a *different* directory the first fix didn't cover. Only found after
+   the manifest fix let the run get further and fail on a *different*
+   missing path. Fixed the same way: tarred just the 766 referenced
+   files (~24MB) and scp'd those over too.
+
+**Process mistake (own error, not a data/code bug)**: after both grids
+finished, deleted the GPU instance (per this project's "never leave an
+instance idle" discipline) *before* scp'ing the per-clip result files
+(`results/phase3_ast_quantized_1pc.jsonl`, `phase3_aum_quantized_1pc.jsonl`)
+back to the local repo -- despite having explicitly written "scp back...
+BEFORE deleting the instance" as an instruction to follow. Thunder Compute
+instances don't persist storage after deletion, so **the raw per-clip
+JSONL rows are gone** and were not committed. What survives: the scripts'
+own printed per-condition/per-length aggregate accuracy (stdout logs
+preserved at `results/phase3_run_logs/phase3_{ast,aum}_quantized_1pc_stdout.log`,
+parsed into `results/phase3_{ast,aum}_quantized_1pc_summary.json` --
+condition x length_sec x n x accuracy x elapsed_s, no per-clip
+predictions). These summary numbers are real (computed by the scripts
+themselves, not reconstructed or estimated by hand) but coarser than the
+brief's data model expects, and Phase 6's bootstrap CIs will need the
+per-clip rows -- regenerating them means another GPU run (cheap: ~10-15
+min total now that the venv setup and both data gaps are known-fixed).
+
+**Results (`PHASE1_CLIPS_PER_CLASS=1` budget scope -- 35 native clips, 105
+per extended length, same manifest Phase 1 used; standard error at these
+n is ~2-5 percentage points, so treat single-point differences as noise)**:
+
+| condition | length | AST acc | AuM acc |
+|---|---|---|---|
+| full-precision (Phase 1) | native/20/40/80/160 | 1.00 / 0.686 / 0.362 / 0.143 / 0.076 | 1.00 / 0.114 / 0.048 / 0.086 / 0.076 |
+| W8A16 | native/20/40/80/160 | 1.00 / 0.610 / 0.400 / 0.181 / 0.029 | 1.00 / 0.095 / 0.048 / 0.095 / 0.057 |
+| W4A16 | native/20/40/80/160 | 1.00 / 0.600 / 0.295 / 0.114 / 0.019 | 1.00 / 0.086 / 0.057 / 0.095 / 0.076 |
+| W8A8 per_tensor (3-seed avg) | native/20/40/80/160 | 1.00 / 0.619 / 0.352 / 0.181 / 0.032 | 0.990 / 0.073 / 0.060 / 0.117 / 0.070 |
+| W8A8 per_token | native/20/40/80/160 | 1.00 / 0.619 / 0.391 / 0.181 / 0.029 | 1.00 / 0.095 / 0.048 / 0.105 / 0.048 |
+
+**Honest finding, not the hoped-for clean signal**: AuM's own
+full-precision baseline is *already* at floor (chance = 1/35 ≈ 0.029)
+from 20s onward -- confirming Phase 1's "collapses to near-chance by 20s"
+exactly as before. This means there is essentially no accuracy headroom
+left for quantization to visibly damage further at this sample size: every
+AuM quantized condition sits within ~1-2 standard errors of AuM's own
+full-precision number at every extended length. **At this budget-scoped
+n, brief hypothesis H1 (quantization hurts AuM more than AST) is
+confounded by AuM's length-driven collapse already dominating before
+quantization is even applied -- the data cannot distinguish "quantization
+made it worse" from "it was already at floor."**
+
+AST, which still has real headroom at these lengths, shows a more legible
+(though still noisy) signal: all four quantized conditions sit
+consistently *below* full-precision at 20s (~7-9pt) and especially at
+160s (~4-6pt, where AST's own full-precision is also fairly collapsed to
+0.076 but the quantized conditions push further toward the 0.029 chance
+floor, consistently across all four conditions -- not just one). At 40s
+and 80s the quantized numbers are noisier and sometimes exceed
+full-precision, consistent with sampling noise at n=105 rather than a
+real effect.
+
+**Forward-looking implication for Phase 4/6**: since AuM hits a floor
+effect in raw accuracy, a softer signal than top-1 accuracy (logit
+margin / softmax entropy / KL divergence between quantized and
+full-precision output distributions) may be necessary to detect
+AuM-specific quantization sensitivity once accuracy itself is saturated
+at chance -- worth considering before concluding "no effect" from Phase 3
+alone. A full (non-budget-scoped) re-run with every label's clips (not 1
+per class) would also directly address the small-n noise problem.
+
 ## 2026-10-06 — AuM's fused forward bypasses nn.Linear hooks; wrote a custom forward instead
 
 Before writing `scripts/phase3_aum_eval.py`, traced through AuM's actual

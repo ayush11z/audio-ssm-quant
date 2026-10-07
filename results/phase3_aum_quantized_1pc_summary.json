@@ -1,0 +1,212 @@
+[
+  {
+    "condition": "w8a16",
+    "length_sec": "native",
+    "n": 35,
+    "accuracy": 1.0,
+    "elapsed_s": 10.6
+  },
+  {
+    "condition": "w8a16",
+    "length_sec": "20",
+    "n": 105,
+    "accuracy": 0.0952,
+    "elapsed_s": 9.7
+  },
+  {
+    "condition": "w8a16",
+    "length_sec": "40",
+    "n": 105,
+    "accuracy": 0.0476,
+    "elapsed_s": 12.0
+  },
+  {
+    "condition": "w8a16",
+    "length_sec": "80",
+    "n": 105,
+    "accuracy": 0.0952,
+    "elapsed_s": 18.1
+  },
+  {
+    "condition": "w8a16",
+    "length_sec": "160",
+    "n": 105,
+    "accuracy": 0.0571,
+    "elapsed_s": 32.8
+  },
+  {
+    "condition": "w4a16",
+    "length_sec": "native",
+    "n": 35,
+    "accuracy": 1.0,
+    "elapsed_s": 5.2
+  },
+  {
+    "condition": "w4a16",
+    "length_sec": "20",
+    "n": 105,
+    "accuracy": 0.0857,
+    "elapsed_s": 9.5
+  },
+  {
+    "condition": "w4a16",
+    "length_sec": "40",
+    "n": 105,
+    "accuracy": 0.0571,
+    "elapsed_s": 12.6
+  },
+  {
+    "condition": "w4a16",
+    "length_sec": "80",
+    "n": 105,
+    "accuracy": 0.0952,
+    "elapsed_s": 18.0
+  },
+  {
+    "condition": "w4a16",
+    "length_sec": "160",
+    "n": 105,
+    "accuracy": 0.0762,
+    "elapsed_s": 30.7
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "native",
+    "n": 35,
+    "accuracy": 0.9714,
+    "elapsed_s": 4.8
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "20",
+    "n": 105,
+    "accuracy": 0.0952,
+    "elapsed_s": 10.2
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "40",
+    "n": 105,
+    "accuracy": 0.0571,
+    "elapsed_s": 13.1
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "80",
+    "n": 105,
+    "accuracy": 0.1143,
+    "elapsed_s": 19.3
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "160",
+    "n": 105,
+    "accuracy": 0.0857,
+    "elapsed_s": 33.8
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "native",
+    "n": 35,
+    "accuracy": 1.0,
+    "elapsed_s": 4.8
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "20",
+    "n": 105,
+    "accuracy": 0.0476,
+    "elapsed_s": 10.5
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "40",
+    "n": 105,
+    "accuracy": 0.0476,
+    "elapsed_s": 13.4
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "80",
+    "n": 105,
+    "accuracy": 0.1333,
+    "elapsed_s": 19.8
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "160",
+    "n": 105,
+    "accuracy": 0.0476,
+    "elapsed_s": 33.5
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "native",
+    "n": 35,
+    "accuracy": 1.0,
+    "elapsed_s": 5.0
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "20",
+    "n": 105,
+    "accuracy": 0.0762,
+    "elapsed_s": 10.3
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "40",
+    "n": 105,
+    "accuracy": 0.0762,
+    "elapsed_s": 13.0
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "80",
+    "n": 105,
+    "accuracy": 0.1048,
+    "elapsed_s": 19.5
+  },
+  {
+    "condition": "w8a8_per_tensor",
+    "length_sec": "160",
+    "n": 105,
+    "accuracy": 0.0762,
+    "elapsed_s": 33.4
+  },
+  {
+    "condition": "w8a8_per_token",
+    "length_sec": "native",
+    "n": 35,
+    "accuracy": 1.0,
+    "elapsed_s": 5.8
+  },
+  {
+    "condition": "w8a8_per_token",
+    "length_sec": "20",
+    "n": 105,
+    "accuracy": 0.0952,
+    "elapsed_s": 11.9
+  },
+  {
+    "condition": "w8a8_per_token",
+    "length_sec": "40",
+    "n": 105,
+    "accuracy": 0.0476,
+    "elapsed_s": 14.1
+  },
+  {
+    "condition": "w8a8_per_token",
+    "length_sec": "80",
+    "n": 105,
+    "accuracy": 0.1048,
+    "elapsed_s": 20.3
+  },
+  {
+    "condition": "w8a8_per_token",
+    "length_sec": "160",
+    "n": 105,
+    "accuracy": 0.0476,
+    "elapsed_s": 35.6
+  }
+]

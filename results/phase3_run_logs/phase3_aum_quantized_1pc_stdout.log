@@ -1,0 +1,500 @@
+/home/ubuntu/audio-ssm-quant/third_party/Audio-Mamba-AuM/src/utilities/tokenization.py:306: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  x = F.conv2d(x, weight, bias=bias, stride=strides)
+=== w8a16 (weights={'bits': 8, 'granularity': 'per_channel', 'symmetric': True}, activations={'bits': None}) ===
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+  length=native n=35 frames=128 quantized_linear=97 acc=1.0000 elapsed_s=10.6
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 1998), pos_grid_size=(8, 124), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 124)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 993, 768])
+  length=20 n=105 frames=1998 quantized_linear=97 acc=0.0952 elapsed_s=9.7
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 3998), pos_grid_size=(8, 249), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 249)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 1993, 768])
+  length=40 n=105 frames=3998 quantized_linear=97 acc=0.0476 elapsed_s=12.0
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 7998), pos_grid_size=(8, 499), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 499)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 3993, 768])
+  length=80 n=105 frames=7998 quantized_linear=97 acc=0.0952 elapsed_s=18.1
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+  length=160 n=105 frames=15998 quantized_linear=97 acc=0.0571 elapsed_s=32.8
+  (w8a16 total: 83.3s)
+=== w4a16 (weights={'bits': 4, 'granularity': 'per_channel', 'symmetric': True}, activations={'bits': None}) ===
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+  length=native n=35 frames=128 quantized_linear=97 acc=1.0000 elapsed_s=5.2
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 1998), pos_grid_size=(8, 124), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 124)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 993, 768])
+  length=20 n=105 frames=1998 quantized_linear=97 acc=0.0857 elapsed_s=9.5
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 3998), pos_grid_size=(8, 249), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 249)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 1993, 768])
+  length=40 n=105 frames=3998 quantized_linear=97 acc=0.0571 elapsed_s=12.6
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 7998), pos_grid_size=(8, 499), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 499)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 3993, 768])
+  length=80 n=105 frames=7998 quantized_linear=97 acc=0.0952 elapsed_s=18.0
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+  length=160 n=105 frames=15998 quantized_linear=97 acc=0.0762 elapsed_s=30.7
+  (w4a16 total: 76.2s)
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+=== w8a8_per_tensor_seed0 (weights={'bits': 8, 'granularity': 'per_channel', 'symmetric': True}, activations={'bits': 8, 'granularity': 'per_tensor', 'symmetric': True}) ===
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+  length=native n=35 frames=128 quantized_linear=97 acc=0.9714 elapsed_s=4.8
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 1998), pos_grid_size=(8, 124), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 124)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 993, 768])
+  length=20 n=105 frames=1998 quantized_linear=97 acc=0.0952 elapsed_s=10.2
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 3998), pos_grid_size=(8, 249), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 249)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 1993, 768])
+  length=40 n=105 frames=3998 quantized_linear=97 acc=0.0571 elapsed_s=13.1
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 7998), pos_grid_size=(8, 499), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 499)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 3993, 768])
+  length=80 n=105 frames=7998 quantized_linear=97 acc=0.1143 elapsed_s=19.3
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+  length=160 n=105 frames=15998 quantized_linear=97 acc=0.0857 elapsed_s=33.8
+  (w8a8_per_tensor_seed0 total: 108.6s)
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+=== w8a8_per_tensor_seed1 (weights={'bits': 8, 'granularity': 'per_channel', 'symmetric': True}, activations={'bits': 8, 'granularity': 'per_tensor', 'symmetric': True}) ===
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+  length=native n=35 frames=128 quantized_linear=97 acc=1.0000 elapsed_s=4.8
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 1998), pos_grid_size=(8, 124), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 124)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 993, 768])
+  length=20 n=105 frames=1998 quantized_linear=97 acc=0.0476 elapsed_s=10.5
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 3998), pos_grid_size=(8, 249), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 249)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 1993, 768])
+  length=40 n=105 frames=3998 quantized_linear=97 acc=0.0476 elapsed_s=13.4
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 7998), pos_grid_size=(8, 499), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 499)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 3993, 768])
+  length=80 n=105 frames=7998 quantized_linear=97 acc=0.1333 elapsed_s=19.8
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+  length=160 n=105 frames=15998 quantized_linear=97 acc=0.0476 elapsed_s=33.5
+  (w8a8_per_tensor_seed1 total: 109.5s)
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+=== w8a8_per_tensor_seed2 (weights={'bits': 8, 'granularity': 'per_channel', 'symmetric': True}, activations={'bits': 8, 'granularity': 'per_tensor', 'symmetric': True}) ===
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+  length=native n=35 frames=128 quantized_linear=97 acc=1.0000 elapsed_s=5.0
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 1998), pos_grid_size=(8, 124), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 124)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 993, 768])
+  length=20 n=105 frames=1998 quantized_linear=97 acc=0.0762 elapsed_s=10.3
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 3998), pos_grid_size=(8, 249), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 249)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 1993, 768])
+  length=40 n=105 frames=3998 quantized_linear=97 acc=0.0762 elapsed_s=13.0
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 7998), pos_grid_size=(8, 499), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 499)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 3993, 768])
+  length=80 n=105 frames=7998 quantized_linear=97 acc=0.1048 elapsed_s=19.5
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+  length=160 n=105 frames=15998 quantized_linear=97 acc=0.0762 elapsed_s=33.4
+  (w8a8_per_tensor_seed2 total: 109.0s)
+=== w8a8_per_token (weights={'bits': 8, 'granularity': 'per_channel', 'symmetric': True}, activations={'bits': 8, 'granularity': 'per_token', 'symmetric': True}) ===
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+  length=native n=35 frames=128 quantized_linear=97 acc=1.0000 elapsed_s=5.8
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 1998), pos_grid_size=(8, 124), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 124)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 993, 768])
+  length=20 n=105 frames=1998 quantized_linear=97 acc=0.0952 elapsed_s=11.9
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 3998), pos_grid_size=(8, 249), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 249)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 1993, 768])
+  length=40 n=105 frames=3998 quantized_linear=97 acc=0.0476 elapsed_s=14.1
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 7998), pos_grid_size=(8, 499), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 499)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 3993, 768])
+  length=80 n=105 frames=7998 quantized_linear=97 acc=0.1048 elapsed_s=20.3
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+  length=160 n=105 frames=15998 quantized_linear=97 acc=0.0476 elapsed_s=35.6
+  (w8a8_per_token total: 87.8s)
+Wrote 2730 rows to /home/ubuntu/audio-ssm-quant/results/phase3_aum_quantized_1pc.jsonl
+
+[exited with code 0]
