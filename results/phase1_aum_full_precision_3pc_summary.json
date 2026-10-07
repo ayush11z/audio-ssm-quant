@@ -1,0 +1,32 @@
+[
+  {
+    "length_sec": "native",
+    "n": 105,
+    "accuracy": 0.981,
+    "elapsed_s": 13.6
+  },
+  {
+    "length_sec": "20",
+    "n": 315,
+    "accuracy": 0.0889,
+    "elapsed_s": 17.6
+  },
+  {
+    "length_sec": "40",
+    "n": 315,
+    "accuracy": 0.073,
+    "elapsed_s": 28.4
+  },
+  {
+    "length_sec": "80",
+    "n": 315,
+    "accuracy": 0.0667,
+    "elapsed_s": 46.3
+  },
+  {
+    "length_sec": "160",
+    "n": 315,
+    "accuracy": 0.0508,
+    "elapsed_s": 79.1
+  }
+]

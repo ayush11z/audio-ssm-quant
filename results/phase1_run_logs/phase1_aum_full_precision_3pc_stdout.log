@@ -1,0 +1,84 @@
+/home/ubuntu/audio-ssm-quant/third_party/Audio-Mamba-AuM/src/utilities/tokenization.py:306: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  x = F.conv2d(x, weight, bias=bias, stride=strides)
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+length=native target_length_frames=128 model built
+length=native n=105 acc=0.9810 elapsed_s=13.6
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 1998), pos_grid_size=(8, 124), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 124)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 993, 768])
+length=20 target_length_frames=1998 model built
+length=20 n=315 acc=0.0889 elapsed_s=17.6
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 3998), pos_grid_size=(8, 249), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 249)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 1993, 768])
+length=40 target_length_frames=3998 model built
+length=40 n=315 acc=0.0730 elapsed_s=28.4
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 7998), pos_grid_size=(8, 499), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 499)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 3993, 768])
+length=80 target_length_frames=7998 model built
+length=80 n=315 acc=0.0667 elapsed_s=46.3
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+length=160 target_length_frames=15998 model built
+length=160 n=315 acc=0.0508 elapsed_s=79.1
+Wrote 1365 rows to /home/ubuntu/audio-ssm-quant/results/phase1_aum_full_precision_3pc.jsonl
+
+[exited with code 0]

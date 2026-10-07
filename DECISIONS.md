@@ -2,6 +2,118 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-07 — Phase 3 re-run at 3x sample (3 clips/class): a real signal
+for AST, floor effect confirmed (not just noise) for AuM, a repeated
+process mistake
+
+The 1pc (1 clip/class) Phase 3 round left two things unresolved: a
+floor-effect confound for AuM (full-precision already near-chance at
+20s+, so quantization's incremental damage couldn't be isolated) and
+lost per-clip result files from a process mistake (GPU instance deleted
+before scp'ing results back). User explicitly chose to re-run at 3
+clips/class (a "moderate bump") over the cheaper "just redo 1pc" or the
+much pricier "full manifest" options, after being shown the actual
+per-clip timing data and a real cost estimate (~2.3hr for AST's grid
+alone, dominated by the 160s length group at ~104 of ~140 min -- user
+approved running it in full rather than dropping 160s or cutting seeds).
+
+**Gate re-validated on the fresh instance**: PASSED, bit-exact
+(`max_abs_diff = 0.0`), confirming the custom AuM forward still matches
+the real model after the earlier refactor.
+
+**Two more process slip-ups, both caught and fixed, neither silent**:
+1. Built `results/phase1_eval_manifest_3pc.json` locally and tarred the
+   wav files it references, but forgot to transfer the manifest JSON
+   file itself -- only the audio. First Phase 1 run crashed with
+   `FileNotFoundError` on the manifest; fixed by scp'ing the ~316KB file
+   directly (now also committed to git, unlike before, so this can't
+   recur from a fresh clone).
+2. **Repeated the exact "delete before scp" mistake from the 1pc round,
+   partially**: copied back and verified both Phase 3 quantized grid
+   files (`phase3_ast_quantized_3pc.jsonl`, `phase3_aum_quantized_3pc.jsonl`
+   -- 8190 rows each, matching 1365 manifest entries x 6 conditions
+   exactly) *before* deleting the instance this time. But the two Phase 1
+   full-precision baseline files (`phase1_ast_full_precision_3pc.jsonl`,
+   `phase1_aum_full_precision_3pc.jsonl`) were run *earlier* in the same
+   session and never scp'd back at all -- only watched live over SSH and
+   never revisited before the instance was torn down. Recovered what
+   survives: the scripts' own printed per-length aggregate accuracy, saved
+   from the task logs into `results/phase1_run_logs/` and parsed into
+   `results/phase1_{ast,aum}_full_precision_3pc_summary.json`. The
+   per-clip rows for the *full-precision baselines* specifically are
+   gone; the per-clip rows for the *quantized grid* (the actual Phase 3
+   deliverable) are intact. Lesson still not fully internalized after the
+   first occurrence -- worth a standing checklist before any `tnr delete`:
+   literally `ls` every results file this session touched, not just the
+   most recent script's output.
+
+One informational (non-)incident: the SSH session monitoring the AST
+grid disconnected ("Broken pipe") partway through its ~2.3hr run. The
+remote python process was unaffected and kept running to completion --
+losing the local SSH client doesn't kill a remote process that's already
+running, as long as the next check reconnects fresh rather than trying to
+reuse the dead session.
+
+**Results, 3pc sample (n=105 at native, n=315 at each extended length --
+roughly 1.1-2.8 percentage-point standard error on these proportions,
+tighter than the 1pc round's ~3-5pp by the expected sqrt(3) factor)**:
+
+| | native | 20s | 40s | 80s | 160s |
+|---|---|---|---|---|---|
+| AST full-precision | 1.000 | 0.594 (SE .028) | 0.362 (SE .027) | 0.178 (SE .022) | 0.041 (SE .011) |
+| AST W8A16 | 1.000 | 0.587 | 0.365 | 0.175 | 0.041 |
+| AST W4A16 | 1.000 | **0.533** | **0.270** | **0.098** | 0.035 |
+| AST W8A8 per_tensor (3-seed avg) | 1.000 | 0.587 | 0.346 | 0.171 | 0.044 |
+| AST W8A8 per_token | 1.000 | 0.594 | 0.365 | 0.175 | 0.044 |
+| AuM full-precision | 0.981 | 0.089 (SE .016) | 0.073 (SE .015) | 0.067 (SE .014) | 0.051 (SE .012) |
+| AuM W8A16 | 0.981 | 0.092 | 0.073 | 0.067 | 0.051 |
+| AuM W4A16 | 0.971 | 0.079 | 0.083 | 0.064 | 0.064 |
+| AuM W8A8 per_tensor (3-seed avg) | 0.981 | 0.087 | 0.088 | 0.089 | 0.056 |
+| AuM W8A8 per_token | 0.981 | 0.089 | 0.073 | 0.070 | 0.051 |
+
+**AST: a real, mostly W4A16-specific signal.** Using a normal
+approximation for the difference of two proportions (quick heuristic, not
+a rigorous test), W4A16's drop vs. full-precision is significant at 40s
+(−9.2pp, z≈−2.5) and 80s (−7.9pp, z≈−2.9), borderline at 20s (−6.0pp,
+z≈−1.5), and washed out at 160s where AST's own full-precision is
+already near its floor. **W8A16 and both W8A8 variants show no
+degradation beyond full-precision at any length, within noise.** The
+degradation tracks *weight* bit-width specifically (W4A16 is the only
+4-bit-weight condition in the grid; every W8A8 variant uses 8-bit
+weights) -- this reads as "4-bit weight quantization measurably hurts
+AST once the input is far outside its training distribution, 8-bit does
+not," not a general quantization-fragility story. Also notable: this
+effect is only visible at 20-80s, where AST still has real accuracy
+headroom to lose -- it disappears at 160s for the same floor-effect
+reason AuM is confounded everywhere.
+
+**AuM: the floor effect is now a confirmed null result, not just an
+artifact of a small sample.** At 3x the sample (SE roughly halved from
+the 1pc round), every AuM quantized condition remains within ~1 SE of
+AuM's own full-precision number at every extended length -- no condition
+comes close to the ~2 SE threshold that would indicate a real effect.
+This is a *stronger*, not weaker, version of the 1pc round's finding:
+tripling the sample did not reveal a quantization-specific signal hiding
+under noise, because there wasn't one to find at this length/metric
+combination. **Brief hypothesis H1 (quantization hurts AuM more than
+AST) is not supported by top-1 accuracy at any sample size tested so
+far** -- AuM's length-driven collapse is total and happens regardless of
+quantization, leaving literally nothing for quantization to make worse
+by this metric.
+
+**Forward-looking implication, now higher-confidence than after the 1pc
+round**: detecting AuM-specific quantization sensitivity, if it exists,
+will need a metric with headroom below AuM's own chance-level accuracy
+floor -- logit margin, softmax entropy, or KL divergence between
+quantized and full-precision output distributions, planned for Phase 4.
+Top-1 accuracy at extended lengths is not going to show it no matter how
+large the sample gets, since AuM's full-precision accuracy is itself
+already indistinguishable from chance there.
+
+This 3pc run supersedes the 1pc round as the primary reported Phase 3
+result; the 1pc entry below is kept for project history (it's where the
+floor-effect hypothesis was first raised, before this run confirmed it).
+
 ## 2026-10-06 — Phase 3 grid run (budget-scoped): two data gaps, one process
 mistake, and an honest floor-effect finding
 

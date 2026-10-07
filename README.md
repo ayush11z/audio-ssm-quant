@@ -108,28 +108,33 @@ cache/               Cached full-precision outputs/states — gitignored
       against the fused kernel: max abs diff 3-5e-5 (tolerance 1e-3) at
       both native and extended lengths — safe for Phase 4.
 - [x] **Phase 3** — Standard quantization grid (W8A16, W4A16, W8A8) × both
-      models × all lengths, run at a budget-scoped sample
-      (`PHASE1_CLIPS_PER_CLASS=1`, same manifest Phase 1 used). AuM needed
-      a custom forward reimplementation
+      models × all lengths. AuM needed a custom forward reimplementation
       (`src/ssmquant/models/aum_quantized_mamba.py`) since its fused
       `BiMambaInnerFn` bypasses `nn.Linear` hooks, plus its own static
-      per-tensor calibration path (the generic hook-based one can't see
-      those activations either) — gate-validated bit-exact against the
-      real forward pass (max abs diff 0.0). **Honest result, not a clean
-      win**: at this sample size AuM's full-precision baseline is already
-      at floor (near-chance) from 20s onward, so quantization's
-      incremental damage can't be cleanly isolated from the length-driven
-      collapse Phase 1 already found — see DECISIONS.md for the full
-      numbers and the floor-effect discussion. AST shows a more legible
-      (still noisy) quantization-driven accuracy drop at the length
-      extremes. Per-clip result rows were lost to a process mistake
-      (GPU instance deleted before they were copied back) — only the
-      scripts' own printed aggregate accuracy survives
-      (`results/phase3_{ast,aum}_quantized_1pc_summary.json`,
-      `results/phase3_run_logs/`); regenerating the per-clip rows (needed
-      for Phase 6's bootstrap CIs) will need a short follow-up GPU run.
-      A full (non-budget-scoped) re-run may also be needed to resolve the
-      floor-effect ambiguity.
+      per-tensor calibration path — gate-validated bit-exact against the
+      real forward pass (max abs diff 0.0).
+      **Primary result (3 clips/class, n=315 per extended length,
+      `results/phase3_{ast,aum}_quantized_3pc.jsonl` + matching
+      `phase1_{ast,aum}_full_precision_3pc*` baselines)**: AST shows a
+      real, mostly W4A16-specific accuracy drop at 40-80s (−8 to −9pp,
+      statistically significant; W8A16/W8A8 show no degradation beyond
+      full precision). **AuM shows no quantization-specific signal at
+      any length or bit-width** — its full-precision accuracy is already
+      at chance from 20s onward, and every quantized condition stays
+      within ~1 standard error of that same full-precision number.
+      Brief hypothesis H1 (quantization hurts AuM more than AST) is not
+      supported by top-1 accuracy — see DECISIONS.md for the full tables
+      and the floor-effect discussion. An earlier 1-clip/class round
+      (kept in DECISIONS.md for history) first raised this floor-effect
+      concern; the 3-clip/class re-run confirmed it's a real null result,
+      not a small-sample artifact. Detecting AuM-specific quantization
+      sensitivity, if it exists, will need a softer metric than top-1
+      accuracy (logit margin / entropy / KL divergence) — planned for
+      Phase 4. Note: the two Phase 1 full-precision baseline runs' per-clip
+      rows were lost to a process mistake (not copied back before the GPU
+      instance was deleted); only their aggregate accuracy survives
+      (`results/phase1_run_logs/`, `results/phase1_{ast,aum}_full_precision_3pc_summary.json`).
+      The Phase 3 quantized grid's own per-clip rows are intact.
 - [ ] **Phase 4** — SSM-internal ablations (Δ / A / B,C / h) + state
       divergence logging.
 - [ ] **Phase 5 (stretch)** — Mamba-HuBERT vs. HuBERT on concatenated

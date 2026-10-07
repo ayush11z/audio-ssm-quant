@@ -1,0 +1,13 @@
+/home/ubuntu/aum_venv/lib/python3.10/site-packages/huggingface_hub/file_download.py:949: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+/home/ubuntu/aum_venv/lib/python3.10/site-packages/torch/nn/modules/conv.py:456: UserWarning: Applied workaround for CuDNN issue, install nvrtc.so (Triggered internally at ../aten/src/ATen/native/cudnn/Conv_v8.cpp:80.)
+  return F.conv2d(input, weight, bias, self.stride,
+Base grid: freq=12 time=12 (native max_length=128)
+length=native n=105 frames=128 acc=1.0000 elapsed_s=2.6
+length=20 n=315 frames=1998 acc=0.5937 elapsed_s=25.2
+length=40 n=315 frames=3998 acc=0.3619 elapsed_s=72.6
+length=80 n=315 frames=7998 acc=0.1778 elapsed_s=264.8
+length=160 n=315 frames=15998 acc=0.0413 elapsed_s=1040.3
+Wrote 1365 rows to /home/ubuntu/audio-ssm-quant/results/phase1_ast_full_precision_3pc.jsonl
+
+[exited with code 0]
