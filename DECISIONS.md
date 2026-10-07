@@ -2,6 +2,69 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-07 — Phase 4 built and gate-validated; real timing kills my own
+cost estimate by ~2 orders of magnitude, scope decision needed before
+running anything
+
+Built `src/ssmquant/models/aum_quantized_scan.py` (a step-by-step Python
+port of `selective_scan_ref`, generalized to fake-quantize exactly one of
+{delta, A, BC, state} at the point it's used, plus parallel-trajectory
+state-divergence tracking), `scripts/phase4_validate_quantized_scan.py`
+(the required gate), and `scripts/phase4_aum_ablation_eval.py` (the full
+12-condition grid: 4 targets x bits in {8,6,4}, matching the pre-existing
+`configs/quant/ssm_{delta,A,BC,state}.yaml` scaffolding exactly). Design
+approved via a plan review before writing any code (see
+`/Users/ayushurs/.claude/plans/dynamic-honking-crane.md`): ablate one
+tensor at a time, full-precision Linears throughout (isolates the SSM-
+internal effect from Phase 3's already-explored Linear-layer axis),
+per-timestep divergence as the headroom-surviving metric Phase 3's
+floor-effect finding motivated.
+
+**Gate: PASSED cleanly.** `max_abs_diff = 1.4e-6` at native (128 frames),
+`5.7e-6` at extended (15998 frames, Phase 1's 160s condition) -- both
+far inside the 1e-2 tolerance, consistent with (better than) Phase 2's
+3-5e-5 finding for the reference scan alone. The new step-loop
+reimplementation is numerically correct even at 16x the length Phase 2
+directly tested.
+
+**Real cost blew past my own estimate by ~2 orders of magnitude.** The
+gate also measured real per-clip wall-clock cost (the actual point of
+running it before committing to a grid): 0.92s at native (128 frames),
+**85.68s at 160s (15998 frames) -- for ONE clip, no quantization
+overhead.** My plan's own guess ("likely fine at 1 clip/class... nowhere
+near AST's attention-driven blowup") was wrong -- extrapolating this
+per-frame rate (~0.0054 s/frame, roughly linear in sequence length, as
+expected for a per-timestep Python loop) across the brief's 1pc clip
+counts (35 native + 105 each at 20/40/80/160s) gives **~4.7 hours per
+condition, ~56 hours for the full 12-condition grid.** Completely
+impractical, and this is almost entirely the 160s length's cost (105
+clips x 85.68s ≈ 2.5 hours, more than half the per-condition total by
+itself) -- 20/40/80s are each proportionally expensive too, just less
+extreme. Actual ablation runs (which quantize, and for the small
+divergence-logging subset, run an extra parallel unquantized trajectory)
+will be slower still than this baseline measurement, not faster.
+
+**Stopped here rather than committing to a sample size unilaterally** --
+per the approved plan's own "report real cost before scaling" step, and
+given how far off the going-in guess was. Deleted the GPU instance
+(idle while a scope decision is pending) rather than leave it running;
+re-provisioning from a cold instance is a known ~10 min cost now, cheap
+relative to the decision at hand. The gate's own result file
+(`results/phase4_quantized_scan_validation.json`) wasn't copied back
+before deletion -- reconstructed from the run's own printed output
+(captured in full before the instance was torn down), not re-estimated
+or fabricated; same near-miss as earlier Phase 1/3 baseline-file losses
+this session, caught immediately and recovered from real data rather
+than repeated blind.
+
+Options on the table for the user (not yet decided): cut clips/length
+drastically (e.g. 3-10 instead of 35-105, bringing the full grid to
+~1.6-5.4 hours depending on count); drop the 160s length specifically
+(it alone is >50% of the cost); cut bit-widths tested from 3 to 1 (e.g.
+only the most aggressive 4-bit, cutting conditions from 12 to 4); or
+some combination. Whichever is picked, this entry should be updated with
+the actual chosen scope and the real grid results once run.
+
 ## 2026-10-07 — Phase 3 re-run at 3x sample (3 clips/class): a real signal
 for AST, floor effect confirmed (not just noise) for AuM, a repeated
 process mistake
