@@ -2,6 +2,131 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-08 — Phase 6: bootstrap CIs, slope fits, figures (local, no GPU
+needed, runs on Phase 1/3's already-real data)
+
+While Phase 4's ablation grid is blocked on GPU infrastructure (lost
+twice -- Thunder Compute's account got deactivated mid-run, then DSMLP's
+pod got destroyed mid-session, likely tied to interactive-session
+lifetime -- see entries below), Phase 6 doesn't need a GPU at all: it's
+pure analysis over result files Phases 1 and 3 already produced for
+real. Built `src/ssmquant/analysis/{bootstrap,slope_fit,figures}.py` and
+`scripts/phase6_bootstrap_slopes.py`, with 15 new unit tests
+(`tests/test_bootstrap.py`, `tests/test_slope_fit.py`) before trusting
+any number computed from real data -- same discipline as every other
+phase's gate.
+
+**Two different kinds of interval, used honestly depending on what
+survives**: Phase 3's 3pc quantized grid still has real per-clip rows, so
+those get a genuine nonparametric bootstrap (resample clips with
+replacement, 10000 resamples). Phase 1's matching 3pc full-precision
+baseline only has aggregate accuracy (its per-clip rows were lost to a
+process mistake earlier this session -- see the 2026-10-07 entry below),
+so it gets a Wilson score interval from the surviving (k, n) counts
+instead -- deliberately not a plain normal approximation, which breaks
+down exactly where several of this project's real numbers sit (p near 0,
+e.g. AuM's accuracy at extended lengths). The script's own output labels
+every interval with which method produced it; they are not read as
+equivalently precise.
+
+**Slope fits** (accuracy vs log10(length), the four extended lengths
+only -- native is excluded, see slope_fit.py's docstring for why mixing
+it in would conflate "no synthetic noise" with "short length") turn the
+qualitative floor-effect finding into actual numbers:
+
+| | full-precision slope | W8A16 slope (95% CI) | W4A16 slope (95% CI) |
+|---|---|---|---|
+| AST | -0.612 acc/decade | -0.607 [-0.670, -0.544] | -0.554 [-0.616, -0.491] |
+| AuM | -0.040 acc/decade | -0.043 [-0.085, -0.002] | -0.022 [-0.064, +0.020] |
+
+AuM's slope is roughly **15x shallower** than AST's, quantifying what the
+figures already showed qualitatively. Interestingly, AuM's W8A16 slope CI
+*barely* excludes zero (upper bound -0.002) while W4A16's CI straddles
+zero -- a faint, condition-dependent residual trend even within the
+already-collapsed regime, not nothing, but nowhere near AST's clearly
+nonzero degradation. Consistent with, and a sharper version of, the
+floor-effect finding already in DECISIONS.md -- not a new result,
+a more precise statement of the same one.
+
+Three figures written to `figures/` (vector PDF): `phase6_accuracy_vs_
+length_{ast,aum}.pdf` (full-precision vs W8A16 vs W4A16, each model) and
+`phase6_fullprecision_ast_vs_aum.pdf` (the headline comparison). The AuM
+figure in particular makes the floor effect immediately legible: all
+three conditions collapse onto nearly the same near-chance line by 20s,
+visually inseparable from each other, next to AST's clean fan of curves.
+
+A secondary "matched check" (`results/phase6_bootstrap_slopes.json`'s
+`matched_check_1pc` key) re-runs the same bootstrap methodology on the
+1-clips/class round's full-precision baseline, which DOES still have
+per-clip data there (only the 3pc round's baseline was lost) -- a fully-
+bootstrapped, same-methodology cross-check at a different (smaller)
+sample size, not just the Wilson-interval fallback.
+
+Not yet included: Phase 4's ablation results (not done yet) and formal
+significance tables beyond what's in the JSON output -- can extend this
+script once Phase 4 lands rather than rewriting it.
+
+## 2026-10-07/08 — Phase 4 blocked twice on infrastructure, not code:
+Thunder Compute account deactivated mid-run, then DSMLP pod destroyed
+mid-session
+
+Two separate GPU-provider failures, neither a bug in this project's own
+code (the Phase 4 gate had already passed cleanly before either
+incident):
+
+1. **Thunder Compute**: mid-way through the real (scoped-down, 5-clips/
+   length) Phase 4 ablation grid run (~57 min of ~2.7hr estimated total
+   elapsed, progressing normally), the account was deactivated by
+   Thunder Compute for a billing/payment issue. `tnr status` started
+   reporting "No instances found" and an account-deactivated warning --
+   the instance was gone, not something recoverable from this side. No
+   results had been written yet (the script only writes its output files
+   at the very end, after all 12 conditions finish), so nothing was lost
+   that hadn't already been lost by the run not completing. User decided
+   to stop using Thunder Compute entirely rather than resolve the billing
+   issue, and switched to DSMLP (UCSD's own GPU cluster, free for
+   students/coursework, no billing concerns).
+
+2. **DSMLP**: got a pod with an NVIDIA A30 (compute capability 8.0,
+   clearing AuM's Ampere+ requirement -- confirmed via `nvidia-smi
+   --query-gpu=name,compute_cap`), running in MIG mode with a ~12GB
+   slice. Home directory is persistent NFS storage (survives pod
+   restarts, unlike Thunder Compute's always-fresh-instance model) --
+   genuinely useful, since environment setup only needs to happen once.
+   Installed Claude Code inside a pod (per DSMLP's own login-banner
+   guidance that agentic coding tools should run inside containers, not
+   on the login node) to drive the GPU work directly from there instead
+   of relaying commands through chat. It worked, briefly and well: built
+   the venv, re-validated the Phase 4 gate for real on this hardware
+   (PASSED, matching Thunder Compute's numbers: `5.72e-6` max_abs_diff;
+   notably the 160s-length path ran ~2.7x FASTER on this A30 than on
+   Thunder Compute's A6000 -- 31.9s/clip vs 85.7s/clip, hardware/driver-
+   dependent, not something to read into further), and launched the real
+   ablation grid as a properly detached background process (`setsid
+   nohup ... &`, logging to the persistent NFS home). Then, twice, the
+   **pod itself got destroyed** mid-session while Claude Code's
+   interactive TUI was active -- not just a disconnected shell, the
+   whole pod (taking the just-launched background job with it,
+   regardless of how well-detached it was, since detaching from a
+   terminal session doesn't survive the container itself being torn
+   down). Root cause not confirmed, but the pattern (pod death
+   immediately coinciding with terminal rendering/escape-sequence
+   garbage over this double-hop SSH-into-login-node-then-into-pod
+   connection) points at DSMLP tying a pod's lifetime to its originating
+   interactive launch session, with the TUI's heavy redraw/control-
+   sequence traffic over a flaky nested connection being what breaks
+   that session. Abandoned running Claude Code's TUI inside the pod for
+   this reason; reverted to the same plain-command relay pattern used
+   successfully for Thunder Compute (user runs exact commands given in
+   chat, pastes output back) for any future DSMLP GPU work.
+
+**Current state**: Phase 4's ablation grid has not successfully completed
+on either provider. The code is correct (gate passed 3 times total now,
+across two different GPU generations) -- this is purely an availability/
+infrastructure problem, to be retried on DSMLP with the plain-command
+pattern rather than the TUI-in-pod approach, whenever GPU time is next
+available.
+
 ## 2026-10-07 — Phase 4 built and gate-validated; real timing kills my own
 cost estimate by ~2 orders of magnitude, scope decision needed before
 running anything

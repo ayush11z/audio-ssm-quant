@@ -136,10 +136,21 @@ cache/               Cached full-precision outputs/states — gitignored
       (`results/phase1_run_logs/`, `results/phase1_{ast,aum}_full_precision_3pc_summary.json`).
       The Phase 3 quantized grid's own per-clip rows are intact.
 - [ ] **Phase 4** — SSM-internal ablations (Δ / A / B,C / h) + state
-      divergence logging.
+      divergence logging. Code written and gate-validated (bit-exact
+      reference-scan reimplementation, confirmed on two different GPU
+      generations — see DECISIONS.md), but the real ablation grid hasn't
+      completed yet: lost twice to GPU-provider infrastructure failures
+      (Thunder Compute account deactivated mid-run, then a DSMLP pod got
+      destroyed mid-session), not a code problem. Needs a retry.
 - [ ] **Phase 5 (stretch)** — Mamba-HuBERT vs. HuBERT on concatenated
       LibriSpeech (WER).
-- [ ] **Phase 6** — Bootstrap CIs, slope fits, figures, tables.
+- [x] **Phase 6** — Bootstrap CIs, slope fits, figures, tables, computed
+      from Phase 1/3's real data (`scripts/phase6_bootstrap_slopes.py`,
+      `src/ssmquant/analysis/{bootstrap,slope_fit,figures}.py`, 15 unit
+      tests). Turns the floor-effect finding into a number: AuM's length-
+      degradation slope is ~15x shallower than AST's (-0.04 vs -0.61
+      accuracy points per decade of length). Figures in `figures/`.
+      Doesn't need a GPU — will extend to cover Phase 4 once that lands.
 - [ ] **Phase 7** — Paper draft (LaTeX, 1–3 pages, arXiv-ready).
 
 ## Reproducing a figure

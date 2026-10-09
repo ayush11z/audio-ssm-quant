@@ -1,0 +1,828 @@
+{
+  "primary_3pc": {
+    "ast": {
+      "full_precision": {
+        "by_length": {
+          "native": {
+            "accuracy": 1.0,
+            "ci_low": 0.9647059230708901,
+            "ci_high": 1.0,
+            "n": 105,
+            "method": "wilson"
+          },
+          "20": {
+            "accuracy": 0.5937,
+            "ci_low": 0.5385998466652386,
+            "ci_high": 0.6464450976723786,
+            "n": 315,
+            "method": "wilson"
+          },
+          "40": {
+            "accuracy": 0.3619,
+            "ci_low": 0.31079497998560945,
+            "ci_high": 0.41634213599112446,
+            "n": 315,
+            "method": "wilson"
+          },
+          "80": {
+            "accuracy": 0.1778,
+            "ci_low": 0.13951512466736735,
+            "ci_high": 0.2238048126116787,
+            "n": 315,
+            "method": "wilson"
+          },
+          "160": {
+            "accuracy": 0.0413,
+            "ci_low": 0.024274444610299723,
+            "ci_high": 0.06931896363425348,
+            "n": 315,
+            "method": "wilson"
+          }
+        },
+        "slope": {
+          "slope": -0.6116666201116102,
+          "ci_low": null,
+          "ci_high": null,
+          "method": "point_estimate_only"
+        }
+      },
+      "quantized": {
+        "w8a16": {
+          "by_length": {
+            "native": {
+              "accuracy": 1.0,
+              "ci_low": 1.0,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.5873015873015873,
+              "ci_low": 0.5333333333333333,
+              "ci_high": 0.6412698412698413,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.36507936507936506,
+              "ci_low": 0.3111111111111111,
+              "ci_high": 0.41904761904761906,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.1746031746031746,
+              "ci_low": 0.13333333333333333,
+              "ci_high": 0.21587301587301588,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.04126984126984127,
+              "ci_low": 0.022222222222222223,
+              "ci_high": 0.06349206349206349,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.607438280207975,
+            "ci_low": -0.6696585207153889,
+            "ci_high": -0.5441634593529775,
+            "method": "bootstrap"
+          }
+        },
+        "w4a16": {
+          "by_length": {
+            "native": {
+              "accuracy": 1.0,
+              "ci_low": 1.0,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.5333333333333333,
+              "ci_low": 0.4793650793650794,
+              "ci_high": 0.5873015873015873,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.2698412698412698,
+              "ci_low": 0.2222222222222222,
+              "ci_high": 0.31746031746031744,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.09841269841269841,
+              "ci_low": 0.06666666666666667,
+              "ci_high": 0.13333333333333333,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.03492063492063492,
+              "ci_low": 0.015873015873015872,
+              "ci_high": 0.05714285714285714,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.5536546824812272,
+            "ci_low": -0.6158749229886412,
+            "ci_high": -0.4914344419738131,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_tensor_seed0": {
+          "by_length": {
+            "native": {
+              "accuracy": 1.0,
+              "ci_low": 1.0,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.5904761904761905,
+              "ci_low": 0.5365079365079365,
+              "ci_high": 0.6444444444444445,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.34285714285714286,
+              "ci_low": 0.2920634920634921,
+              "ci_high": 0.3968253968253968,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.17142857142857143,
+              "ci_low": 0.13015873015873017,
+              "ci_high": 0.2126984126984127,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.04126984126984127,
+              "ci_low": 0.022222222222222223,
+              "ci_high": 0.06349206349206349,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.604274539165225,
+            "ci_low": -0.6664947796726391,
+            "ci_high": -0.5409997183102276,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_tensor_seed1": {
+          "by_length": {
+            "native": {
+              "accuracy": 1.0,
+              "ci_low": 1.0,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.5904761904761905,
+              "ci_low": 0.5365079365079365,
+              "ci_high": 0.6444444444444445,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.346031746031746,
+              "ci_low": 0.29523809523809524,
+              "ci_high": 0.4,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.16507936507936508,
+              "ci_low": 0.12380952380952381,
+              "ci_high": 0.20634920634920634,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.050793650793650794,
+              "ci_low": 0.02857142857142857,
+              "ci_high": 0.0761904761904762,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.5979470570797253,
+            "ci_low": -0.6612218779347226,
+            "ci_high": -0.5336176558771448,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_tensor_seed2": {
+          "by_length": {
+            "native": {
+              "accuracy": 1.0,
+              "ci_low": 1.0,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.580952380952381,
+              "ci_low": 0.526984126984127,
+              "ci_high": 0.6349206349206349,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.3492063492063492,
+              "ci_low": 0.2984126984126984,
+              "ci_high": 0.4031746031746032,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.1746031746031746,
+              "ci_low": 0.13333333333333333,
+              "ci_high": 0.21587301587301588,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.04126984126984127,
+              "ci_low": 0.022222222222222223,
+              "ci_high": 0.06349206349206349,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.5958378963845586,
+            "ci_low": -0.6580581368919727,
+            "ci_high": -0.5315084951819781,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_token": {
+          "by_length": {
+            "native": {
+              "accuracy": 1.0,
+              "ci_low": 1.0,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.5936507936507937,
+              "ci_low": 0.5396825396825397,
+              "ci_high": 0.6476190476190476,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.36507936507936506,
+              "ci_low": 0.3142857142857143,
+              "ci_high": 0.41904761904761906,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.1746031746031746,
+              "ci_low": 0.13333333333333333,
+              "ci_high": 0.21587301587301588,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.044444444444444446,
+              "ci_low": 0.022222222222222223,
+              "ci_high": 0.06666666666666667,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.6106020212507247,
+            "ci_low": -0.6728222617581389,
+            "ci_high": -0.5462726200481441,
+            "method": "bootstrap"
+          }
+        }
+      }
+    },
+    "aum": {
+      "full_precision": {
+        "by_length": {
+          "native": {
+            "accuracy": 0.981,
+            "ci_low": 0.933194403305581,
+            "ci_high": 0.994760817934037,
+            "n": 105,
+            "method": "wilson"
+          },
+          "20": {
+            "accuracy": 0.0889,
+            "ci_low": 0.0622147098292475,
+            "ci_high": 0.12546934807850085,
+            "n": 315,
+            "method": "wilson"
+          },
+          "40": {
+            "accuracy": 0.073,
+            "ci_low": 0.04914404712022169,
+            "ci_high": 0.10717646089979496,
+            "n": 315,
+            "method": "wilson"
+          },
+          "80": {
+            "accuracy": 0.0667,
+            "ci_low": 0.044014223406158424,
+            "ci_high": 0.09976086465876552,
+            "n": 315,
+            "method": "wilson"
+          },
+          "160": {
+            "accuracy": 0.0508,
+            "ci_low": 0.03150399267867203,
+            "ci_high": 0.0809075454985202,
+            "n": 315,
+            "method": "wilson"
+          }
+        },
+        "slope": {
+          "slope": -0.04006245282434161,
+          "ci_low": null,
+          "ci_high": null,
+          "method": "point_estimate_only"
+        }
+      },
+      "quantized": {
+        "w8a16": {
+          "by_length": {
+            "native": {
+              "accuracy": 0.9809523809523809,
+              "ci_low": 0.9523809523809523,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.09206349206349207,
+              "ci_low": 0.06031746031746032,
+              "ci_high": 0.12380952380952381,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.07301587301587302,
+              "ci_low": 0.044444444444444446,
+              "ci_high": 0.10476190476190476,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.06666666666666667,
+              "ci_low": 0.04126984126984127,
+              "ci_high": 0.09523809523809523,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.050793650793650794,
+              "ci_low": 0.02857142857142857,
+              "ci_high": 0.0761904761904762,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.043237794250914896,
+            "ci_low": -0.08542100815424648,
+            "ci_high": -0.0021091606951665863,
+            "method": "bootstrap"
+          }
+        },
+        "w4a16": {
+          "by_length": {
+            "native": {
+              "accuracy": 0.9714285714285714,
+              "ci_low": 0.9333333333333333,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.07936507936507936,
+              "ci_low": 0.050793650793650794,
+              "ci_high": 0.1111111111111111,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.08253968253968254,
+              "ci_low": 0.05396825396825397,
+              "ci_high": 0.11428571428571428,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.06349206349206349,
+              "ci_low": 0.0380952380952381,
+              "ci_high": 0.09206349206349207,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.06349206349206349,
+              "ci_low": 0.0380952380952381,
+              "ci_high": 0.09206349206349207,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.022146187299249095,
+            "ci_low": -0.06432940120258068,
+            "ci_high": 0.020037026604082492,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_tensor_seed0": {
+          "by_length": {
+            "native": {
+              "accuracy": 0.9714285714285714,
+              "ci_low": 0.9333333333333333,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.09206349206349207,
+              "ci_low": 0.06349206349206349,
+              "ci_high": 0.12380952380952381,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.08571428571428572,
+              "ci_low": 0.05714285714285714,
+              "ci_high": 0.11746031746031746,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.08253968253968254,
+              "ci_low": 0.05396825396825397,
+              "ci_high": 0.11428571428571428,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.05714285714285714,
+              "ci_low": 0.03492063492063492,
+              "ci_high": 0.08571428571428572,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.03585573181783186,
+            "ci_low": -0.07909352606874676,
+            "ci_high": 0.00632748208549974,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_tensor_seed1": {
+          "by_length": {
+            "native": {
+              "accuracy": 0.9809523809523809,
+              "ci_low": 0.9523809523809523,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.08253968253968254,
+              "ci_low": 0.05396825396825397,
+              "ci_high": 0.11428571428571428,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.07936507936507936,
+              "ci_low": 0.050793650793650794,
+              "ci_high": 0.1111111111111111,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.10158730158730159,
+              "ci_low": 0.06984126984126984,
+              "ci_high": 0.1365079365079365,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.047619047619047616,
+              "ci_low": 0.025396825396825397,
+              "ci_high": 0.07301587301587302,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.02741908903716553,
+            "ci_low": -0.06854772259291383,
+            "ci_high": 0.011600383823416197,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_tensor_seed2": {
+          "by_length": {
+            "native": {
+              "accuracy": 0.9904761904761905,
+              "ci_low": 0.9714285714285714,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.08571428571428572,
+              "ci_low": 0.05714285714285714,
+              "ci_high": 0.11746031746031746,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.09841269841269841,
+              "ci_low": 0.06666666666666667,
+              "ci_high": 0.13333333333333333,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.08253968253968254,
+              "ci_low": 0.05396825396825397,
+              "ci_high": 0.11428571428571428,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.06349206349206349,
+              "ci_low": 0.0380952380952381,
+              "ci_high": 0.09206349206349207,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.027419089037165535,
+            "ci_low": -0.06960230294049713,
+            "ci_high": 0.015818705213749305,
+            "method": "bootstrap"
+          }
+        },
+        "w8a8_per_token": {
+          "by_length": {
+            "native": {
+              "accuracy": 0.9809523809523809,
+              "ci_low": 0.9523809523809523,
+              "ci_high": 1.0,
+              "n": 105,
+              "method": "bootstrap"
+            },
+            "20": {
+              "accuracy": 0.08888888888888889,
+              "ci_low": 0.06031746031746032,
+              "ci_high": 0.12063492063492064,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "40": {
+              "accuracy": 0.07301587301587302,
+              "ci_low": 0.044444444444444446,
+              "ci_high": 0.10476190476190476,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "80": {
+              "accuracy": 0.06984126984126984,
+              "ci_low": 0.04126984126984127,
+              "ci_high": 0.09841269841269841,
+              "n": 315,
+              "method": "bootstrap"
+            },
+            "160": {
+              "accuracy": 0.050793650793650794,
+              "ci_low": 0.02857142857142857,
+              "ci_high": 0.0761904761904762,
+              "n": 315,
+              "method": "bootstrap"
+            }
+          },
+          "slope": {
+            "slope": -0.03901947286058172,
+            "ci_low": -0.08120268676391332,
+            "ci_high": 0.0021091606951665807,
+            "method": "bootstrap"
+          }
+        }
+      }
+    }
+  },
+  "matched_check_1pc": {
+    "ast": {
+      "full_precision": {
+        "by_length": {
+          "native": {
+            "accuracy": 1.0,
+            "ci_low": 1.0,
+            "ci_high": 1.0,
+            "n": 35,
+            "method": "bootstrap"
+          },
+          "20": {
+            "accuracy": 0.6857142857142857,
+            "ci_low": 0.6,
+            "ci_high": 0.7714285714285715,
+            "n": 105,
+            "method": "bootstrap"
+          },
+          "40": {
+            "accuracy": 0.3619047619047619,
+            "ci_low": 0.26666666666666666,
+            "ci_high": 0.45714285714285713,
+            "n": 105,
+            "method": "bootstrap"
+          },
+          "80": {
+            "accuracy": 0.14285714285714285,
+            "ci_low": 0.08571428571428572,
+            "ci_high": 0.20952380952380953,
+            "n": 105,
+            "method": "bootstrap"
+          },
+          "160": {
+            "accuracy": 0.0761904761904762,
+            "ci_low": 0.02857142857142857,
+            "ci_high": 0.13333333333333333,
+            "n": 105,
+            "method": "bootstrap"
+          }
+        },
+        "slope": {
+          "slope": -0.6802043241912222,
+          "ci_low": -0.7846077786019677,
+          "ci_high": -0.5726371287377264,
+          "method": "bootstrap"
+        }
+      },
+      "w8a16": {
+        "by_length": {
+          "native": {
+            "accuracy": 1.0,
+            "ci_low": 0.9010990076755959,
+            "ci_high": 0.9999999999999999,
+            "n": 35,
+            "method": "wilson"
+          },
+          "20": {
+            "accuracy": 0.6095,
+            "ci_low": 0.5139244529196771,
+            "ci_high": 0.697392082610137,
+            "n": 105,
+            "method": "wilson"
+          },
+          "40": {
+            "accuracy": 0.4,
+            "ci_low": 0.3114260137182634,
+            "ci_high": 0.49563280166755863,
+            "n": 105,
+            "method": "wilson"
+          },
+          "80": {
+            "accuracy": 0.181,
+            "ci_low": 0.11901666335076498,
+            "ci_high": 0.26540908097542887,
+            "n": 105,
+            "method": "wilson"
+          },
+          "160": {
+            "accuracy": 0.0286,
+            "ci_low": 0.009763839038702322,
+            "ci_high": 0.08065629063731558,
+            "n": 105,
+            "method": "wilson"
+          }
+        },
+        "slope": {
+          "slope": -0.651662634374054,
+          "ci_low": null,
+          "ci_high": null,
+          "method": "point_estimate_only"
+        }
+      }
+    },
+    "aum": {
+      "full_precision": {
+        "by_length": {
+          "native": {
+            "accuracy": 1.0,
+            "ci_low": 1.0,
+            "ci_high": 1.0,
+            "n": 35,
+            "method": "bootstrap"
+          },
+          "20": {
+            "accuracy": 0.11428571428571428,
+            "ci_low": 0.05714285714285714,
+            "ci_high": 0.18095238095238095,
+            "n": 105,
+            "method": "bootstrap"
+          },
+          "40": {
+            "accuracy": 0.047619047619047616,
+            "ci_low": 0.009523809523809525,
+            "ci_high": 0.09523809523809523,
+            "n": 105,
+            "method": "bootstrap"
+          },
+          "80": {
+            "accuracy": 0.08571428571428572,
+            "ci_low": 0.0380952380952381,
+            "ci_high": 0.14285714285714285,
+            "n": 105,
+            "method": "bootstrap"
+          },
+          "160": {
+            "accuracy": 0.0761904761904762,
+            "ci_low": 0.02857142857142857,
+            "ci_high": 0.13333333333333333,
+            "n": 105,
+            "method": "bootstrap"
+          }
+        },
+        "slope": {
+          "slope": -0.025309928341998952,
+          "ci_low": -0.10756719545349559,
+          "ci_high": 0.05694733876949762,
+          "method": "bootstrap"
+        }
+      },
+      "w8a16": {
+        "by_length": {
+          "native": {
+            "accuracy": 1.0,
+            "ci_low": 0.9010990076755959,
+            "ci_high": 0.9999999999999999,
+            "n": 35,
+            "method": "wilson"
+          },
+          "20": {
+            "accuracy": 0.0952,
+            "ci_low": 0.0525563098634332,
+            "ci_high": 0.1664912762220367,
+            "n": 105,
+            "method": "wilson"
+          },
+          "40": {
+            "accuracy": 0.0476,
+            "ci_low": 0.020509165674361965,
+            "ci_high": 0.10666166583292792,
+            "n": 105,
+            "method": "wilson"
+          },
+          "80": {
+            "accuracy": 0.0952,
+            "ci_low": 0.0525563098634332,
+            "ci_high": 0.1664912762220367,
+            "n": 105,
+            "method": "wilson"
+          },
+          "160": {
+            "accuracy": 0.0571,
+            "ci_low": 0.026449634437321685,
+            "ci_high": 0.11909654798560423,
+            "n": 105,
+            "method": "wilson"
+          }
+        },
+        "slope": {
+          "slope": -0.022157260392898736,
+          "ci_low": null,
+          "ci_high": null,
+          "method": "point_estimate_only"
+        }
+      }
+    }
+  }
+}
