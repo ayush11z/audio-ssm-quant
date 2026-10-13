@@ -1,0 +1,33 @@
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 128), pos_grid_size=(8, 8), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 8)
+The shape of the loaded grid size: (8, 8)
+[native_128] refscan forward pass (one clip, no quantization): 0.34s -- this is the real per-timestep-Python-loop cost the full ablation grid will pay per clip
+[native_128] target_length=128 max_abs_diff=1.192e-06 mean_abs_diff=5.109e-07 mean_rel_diff=1.310e-07 PASS
+<All keys matched successfully>
+Resize function is resample_patch_embed
+Initializing FlexiPatchEmbed with the following parameters:
+patch_size=(16, 16), in_chans=1, embed_dim=768, bias=True, norm_layer=None, flatten=True, proj_load=yes, resize_func=resample_patch_embed
+The resize function is resample_patch_embed
+Loading projection weights!
+The shapes of the current projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+The shapes of the loaded projection: bias=torch.Size([768]), weight=torch.Size([768, 1, 16, 16])
+Initializing FlexiPosEmbed with the following parameters:
+input_size=(128, 15998), pos_grid_size=(8, 999), embed_dim=768, pos_embed_load=torch.Size([1, 65, 768]), pos_grid_size_load=(8, 8), n_prefix_tokens=1, pos_embed_prefix=True
+Loading position embedding!
+The shape of the current grid size: (8, 999)
+The shape of the loaded grid size: (8, 8)
+The shape of the resampled position embedding: torch.Size([1, 7993, 768])
+[extended_15998] refscan forward pass (one clip, no quantization): 38.11s -- this is the real per-timestep-Python-loop cost the full ablation grid will pay per clip
+[extended_15998] target_length=15998 max_abs_diff=6.199e-06 mean_abs_diff=1.614e-06 mean_rel_diff=3.852e-07 PASS
+
+PASSED overall (tolerance=0.01). Wrote /home/yunicorn/ayush_work/audio-ssm-quant/results/phase4_quantized_scan_validation.json

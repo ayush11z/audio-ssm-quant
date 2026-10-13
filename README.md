@@ -135,13 +135,18 @@ cache/               Cached full-precision outputs/states — gitignored
       instance was deleted); only their aggregate accuracy survives
       (`results/phase1_run_logs/`, `results/phase1_{ast,aum}_full_precision_3pc_summary.json`).
       The Phase 3 quantized grid's own per-clip rows are intact.
-- [ ] **Phase 4** — SSM-internal ablations (Δ / A / B,C / h) + state
-      divergence logging. Code written and gate-validated (bit-exact
-      reference-scan reimplementation, confirmed on two different GPU
-      generations — see DECISIONS.md), but the real ablation grid hasn't
-      completed yet: lost twice to GPU-provider infrastructure failures
-      (Thunder Compute account deactivated mid-run, then a DSMLP pod got
-      destroyed mid-session), not a code problem. Needs a retry.
+- [x] **Phase 4** — SSM-internal ablations (Δ / A / B,C / h) + state
+      divergence logging, completed 2026-10-13 on the McAuley lab's
+      deepdiver (RTX A6000; gate re-passed, 4th time). Scoped to 5
+      clips/length, 12 conditions. At native length (the only length
+      with accuracy headroom) quantizing the **recurrent state h** hurts
+      first (3/5 at 8-bit, 0-1/5 at 6/4-bit), then **Δ** (0/5 at 4-bit);
+      A and B,C stay at 5/5 at every bit-width. State divergence ranks
+      them the same way and plateaus instead of compounding with length.
+      n=5 (only 2 distinct words at extended lengths) — directional, not
+      a firm estimate. `results/phase4_aum_ablation_1pc.jsonl`,
+      `results/phase4_state_divergence_1pc_summary.json`,
+      `scripts/phase4_summarize.py`; see DECISIONS.md.
 - [ ] **Phase 5 (stretch)** — Mamba-HuBERT vs. HuBERT on concatenated
       LibriSpeech (WER).
 - [x] **Phase 6** — Bootstrap CIs, slope fits, figures, tables, computed

@@ -2,6 +2,144 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-13 — Phase 4 grid COMPLETED (deepdiver, McAuley lab): the recurrent state h is the fragile tensor, divergence does not compound with length
+
+Third attempt, first to finish. Ran on the McAuley lab's shared server
+(deepdiver, RTX A6000, compute 8.6, GPU 5 only via
+`CUDA_VISIBLE_DEVICES=5`, reserved in the lab channel). Launched in a
+detached tmux session under `setsid nohup`; the controlling Claude Code
+session restarted mid-run and the job was unaffected -- a plain Linux box
+has no DSMLP-style pod lifetime to lose. 12:29 -> 15:42 PDT, `EXIT=0`.
+
+**Setup deviations from `scripts/phase0_setup_env.sh`** (no sudo, no
+system python3.10, no conda on this box):
+- Python 3.10.17 from a standalone `uv` (0.6.14) binary, both installed
+  under the repo's own `.tools/` (gitignored via `.git/info/exclude`),
+  venv at `.venv/`. Has `Python.h`, so Triton's JIT works.
+- Had to pin `setuptools==69.5.1`: the venv's default setuptools (84)
+  no longer ships `pkg_resources`, which causal_conv1d 1.1.3.post1's
+  `setup.py` imports -- `metadata-generation-failed` otherwise.
+- `causal_conv1d` and `mamba_ssm` (1.1.3.post1) both installed from their
+  prebuilt cu118/torch2.1/cp310 GitHub wheels (system nvcc is 13.2; nothing
+  compiled). Same order as before: ViM patch copied over mamba_ssm, then
+  AuM's requirements.txt (pins transformers back to 4.35.2), then
+  `pip install -e .`. 38/38 unit tests pass.
+- AuM cloned at commit `b0eb85d595c4f079606dfff4f4c6f709caafa858`
+  (first time this is pinned anywhere -- see the 2026-09-30 entry's "pin
+  exact commit hashes" note).
+- Both Phase 4 scripts must be copied into `third_party/Audio-Mamba-AuM/`
+  and run from there (their docstrings say so; running from `scripts/`
+  fails on `import src.models`).
+- Rebuilt `results/phase1_eval_manifest_1pc.json` is byte-identical to the
+  committed one -- same 455 clips as Phases 1/3.
+
+**Gate re-run on this hardware: PASSED** (4th pass, 3rd GPU type).
+`max_abs_diff` 1.19e-6 at native (128 frames), 6.20e-6 at 15998 frames
+(tolerance 1e-2). One unquantized 160s clip: 38.1s (A30: 31.9s, Thunder
+Compute A6000: 85.7s). This run's real output replaces the reconstructed
+`results/phase4_quantized_scan_validation.json`; log in
+`results/phase4_run_logs/phase4_gate_deepdiver.log`.
+
+**Grid cost**: 11,531s total. Δ/B,C conditions ~755-763s each, A ~667-671s,
+state ~1629-1684s (quantizes h at every timestep, ~2x the others).
+Per-condition timings in `results/phase4_run_logs/phase4_ablation_1pc_deepdiver.log`.
+
+**Results** (`results/phase4_aum_ablation_1pc.jsonl`, 300 rows = 12
+conditions x 5 lengths x 5 clips; tables reproduced by
+`scripts/phase4_summarize.py`). Phase 4 has no unquantized condition of
+its own, so the bracketed full-precision count is Phase 1's per-clip
+result on the *exact same wav files*
+(`results/phase1_aum_full_precision_1pc.jsonl`):
+
+| condition | native [FP 5/5] | 20s [FP 0/5] | 40s [FP 0/5] | 80s [FP 0/5] | 160s [FP 0/5] |
+|---|---|---|---|---|---|
+| Δ 8-bit | 5/5 | 0/5 | 0/5 | 0/5 | 0/5 |
+| Δ 6-bit | 4/5 | 1/5 | 2/5 | 1/5 | 2/5 |
+| Δ 4-bit | **0/5** | 0/5 | 0/5 | 1/5 | 1/5 |
+| A 8/6/4-bit | 5/5, 5/5, 5/5 | 0, 0, 0 | 0, 0, 0 | 0, 0, 0 | 0, 0, 1 |
+| B,C 8/6/4-bit | 5/5, 5/5, 5/5 | 0, 0, 0 | 0, 0, 0 | 0, 0, 0 | 0, 0, 0 |
+| state h 8-bit | **3/5** | 1/5 | 0/5 | 0/5 | 0/5 |
+| state h 6-bit | **0/5** | 0/5 | 0/5 | 0/5 | 0/5 |
+| state h 4-bit | **1/5** | 0/5 | 0/5 | 0/5 | 0/5 |
+
+State divergence `||h_quantized - h_full_precision||`
+(`results/phase4_state_divergence_1pc_summary.json`; median over every
+non-zero layer x direction x clip trace, 2 clips per cell):
+
+| target | 8-bit (20s / 160s) | 6-bit (20s / 160s) | 4-bit (20s / 160s) |
+|---|---|---|---|
+| Δ | 5.2e-3 / 4.6e-3 | 1.9e-2 / 1.6e-2 | 0.28 / 0.31 |
+| A | 1.7e-2 / 1.8e-2 | 6.4e-2 / 7.7e-2 | 0.35 / 0.38 |
+| B,C | 1.8e-2 / 1.9e-2 | 7.9e-2 / 8.9e-2 | 0.48 / 0.50 |
+| state h | 0.55 / 0.53 | 1.64 / 1.70 | 4.16 / 4.06 |
+
+**Findings:**
+1. **Which tensor drives degradation: the recurrent state h, then Δ.**
+   At native length -- the only place with accuracy headroom (FP 5/5) --
+   quantizing h already costs accuracy at 8 bits (3/5) and destroys it at
+   6 and 4 bits (0/5, 1/5); Δ holds at 8 bits, slips at 6 (4/5), and
+   collapses at 4 (0/5). A and B,C are untouched at every bit-width
+   (5/5). The divergence metric ranks them the same way: h's divergence
+   is roughly 8-100x the other three's at every bit-width (smallest gap:
+   4-bit h 4.16 vs 4-bit B,C 0.48 at 20s). Directionally
+   consistent with brief hypothesis H2 (SSM-specific tensors matter), and
+   specifically points at h and Δ rather than A or B,C.
+2. **Divergence does not compound with length.** Within a sequence, every
+   trace reaches a plateau almost immediately and stays there:
+   last-10%/first-10% ratio is 0.75-1.2 at every extended length for
+   every condition except A 4-bit at 20s/40s (1.45, 1.26 -- shrinking
+   back to 1.11 by 80s/160s; the larger 1.9-2.8 ratios appear only at native
+   length, where "first 10%" is the first ~6 of 65 tokens, i.e. warm-up).
+   Across lengths, the plateau level is flat from 20s to 160s (table
+   above). So quantization error is bounded, not accumulating. A plausible
+   reason, not tested: in this checkpoint Δ ≈ softplus(dt_proj.bias) ≈
+   0.69 and A ≈ -1 for most channels (see below), so `exp(Δ·A)` ≈ 0.5 --
+   the state forgets about half of itself every step, which also caps how
+   long any error can persist.
+3. **Extended-length accuracy says nothing about quantization.** FP is
+   already 0/5 on these exact wavs at 20-160s (Phase 1's floor effect);
+   the scattered 1-2/5 "hits" under Δ-6bit etc. are at or near chance and
+   are not read as improvements.
+
+**Is n=5 enough? No, not for a firm conclusion.** Each accuracy cell is 5
+clips; the divergence cells are 2 clips. Worse, the script takes the
+*first 5* manifest items per length, and because the manifest lists each
+source word's start/middle/end variants together, every extended length
+covers only **2 distinct words** ("three", "yes"). Native length has 5
+distinct words (left, seven, six, three, yes). The *ordering* (h > Δ >>
+A ≈ B,C) is consistent across both metrics and all three bit-widths,
+which is why it's reported as a finding at all, but specific numbers like
+"state 8-bit = 3/5" should not be quoted as an accuracy estimate.
+Also: (a) all calibration scales are computed at native length and reused
+at every length -- h's range at 160s may exceed it and clip; (b)
+divergence is an absolute L2 norm, not normalized by `||h_fp||`.
+
+**Exactly-zero divergence traces are real, not a bug** (investigated
+before trusting anything): layers 2, 3, 4 have zero divergence under
+*every* condition, including 4-bit state quantization. Their
+`x_proj` B/C weight rows are ~2.4e-38 in the checkpoint itself, so their
+SSM state never leaves zero (and quantizing 0 gives 0). Under A
+quantization, layers 7, 22, 23 are also zero: every A entry there is
+exactly -1 (untrained `A_log = 0`), which per-tensor quantization
+(amax = 1, scale = 1/qmax) represents exactly. Side observation from
+the same check: `dt_proj.weight` is ~2e-38 in 17 of 24 layers, i.e. Δ is
+essentially input-independent in most of this checkpoint -- worth knowing
+before reading too much into "Δ quantization" as a selectivity story.
+
+**Data handling**: `results/phase4_state_divergence_1pc.json` is 318MB
+(over GitHub's 100MB limit) -- kept only on deepdiver
+(`/home/yunicorn/ayush_work/audio-ssm-quant/results/`) and gitignored.
+`scripts/phase4_summarize.py` turns it into the committed 2.2MB
+`results/phase4_state_divergence_1pc_summary.json` (per-trace mean,
+first/last-10%, max, final), which is enough to re-derive every number
+above.
+
+**Not decided (scope calls for the user)**: if this result is worth
+firming up, the cheapest high-value next run is more *distinct* clips at
+native length only (seconds per clip, and it's the only length with
+headroom), with stratified rather than first-N selection; plus a
+relative divergence metric (`||h_q - h_fp|| / ||h_fp||`).
+
 ## 2026-10-08 — Phase 6: bootstrap CIs, slope fits, figures (local, no GPU
 needed, runs on Phase 1/3's already-real data)
 

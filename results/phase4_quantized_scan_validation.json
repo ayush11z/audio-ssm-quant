@@ -4,19 +4,19 @@
   "results": {
     "native_128": {
       "target_length": 128,
-      "max_abs_diff": 1.431e-06,
-      "mean_abs_diff": 5.586e-07,
-      "mean_rel_diff": 1.424e-07,
+      "max_abs_diff": 1.1920928955078125e-06,
+      "mean_abs_diff": 5.108969389766571e-07,
+      "mean_rel_diff": 1.3102068407988554e-07,
       "passed": true,
-      "refscan_forward_elapsed_s": 0.92
+      "refscan_forward_elapsed_s": 0.3366727828979492
     },
     "extended_15998": {
       "target_length": 15998,
-      "max_abs_diff": 5.722e-06,
-      "mean_abs_diff": 1.740e-06,
-      "mean_rel_diff": 4.136e-07,
+      "max_abs_diff": 6.198883056640625e-06,
+      "mean_abs_diff": 1.6144343817359186e-06,
+      "mean_rel_diff": 3.852163388273766e-07,
       "passed": true,
-      "refscan_forward_elapsed_s": 85.68
+      "refscan_forward_elapsed_s": 38.11284899711609
     }
   }
 }
