@@ -2,6 +2,36 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-19 — Phase 5 dropped: Mamba-based-HuBERT has no public checkpoint
+
+Checked before writing any code (same discipline as every other phase --
+verify checkpoint availability before building around it). The repo
+(https://github.com/hckuo145/Mamba-based-HuBERT) and its paper ("An
+Exploration of Mamba for Speech Self-Supervised Models," ACL 2026,
+arXiv:2506.12606) provide only **training code**: a vendored fairseq
+fork with `run_hubert_*.sh` pretraining scripts (MFCC k-means ->
+iteration-1 HuBERT-Mamba pretrain on LibriSpeech -> feature extraction ->
+k-means on those features -> iteration-2 pretrain) and an `s3prl-mamba`
+fork for downstream fine-tuning/eval. No release, no tag, no checkpoint
+file, no Hugging Face model card, no download link anywhere in the repo
+tree or the paper itself -- confirmed via GitHub's API (0 releases, 0
+tags) and a direct read of the arXiv abstract page, which states only
+that "the codebase is available," not that checkpoints are.
+
+Reproducing this would mean running HuBERT-style SSL pretraining from
+scratch -- the original HuBERT paper's base model pretraining was a
+32-GPU, multi-day job on LibriSpeech-960h. That's a different order of
+magnitude from every other GPU job this project has run (all inference
+or fine-tune-scale, completed on a single free/cheap GPU in minutes to a
+few hours). Not attempted.
+
+**Decision (user's call, offered three options: drop / substitute a
+different Mamba speech-SSL model with a real public checkpoint / attempt
+the pretraining anyway): drop Phase 5.** The brief already marked it a
+stretch goal; this is now a documented, verified reason why, not a
+silent skip. Phases 0-4 and 6 remain the project's full experimental
+record for the brief's core H1/H2 hypotheses.
+
 ## 2026-10-19 — Phase 6 extended to cover Phase 4 (local, no GPU)
 
 `scripts/phase6_bootstrap_slopes.py`'s own docstring flagged this: it only

@@ -155,8 +155,15 @@ cache/               Cached full-precision outputs/states — gitignored
       2026-10-13 run's "divergence plateaus, doesn't compound with
       length" finding still stands, just not re-verified here. See
       DECISIONS.md's 2026-10-13 and 2026-10-19 entries.
-- [ ] **Phase 5 (stretch)** — Mamba-HuBERT vs. HuBERT on concatenated
-      LibriSpeech (WER).
+- [x] **Phase 5 (stretch) — dropped, verified reason.** Mamba-based-HuBERT
+      (https://github.com/hckuo145/Mamba-based-HuBERT, ACL 2026,
+      arXiv:2506.12606) has no public pretrained checkpoint anywhere —
+      only from-scratch SSL pretraining code (HuBERT-style 2-iteration
+      k-means pretraining on LibriSpeech-960h, originally a 32-GPU
+      multi-day job). Confirmed via GitHub's API (0 releases, 0 tags) and
+      the paper's own text before writing any code. Not attempted — a
+      different order of magnitude from every other GPU job in this
+      project. See DECISIONS.md.
 - [x] **Phase 6** — Bootstrap CIs, slope fits, figures, tables, computed
       from Phase 1/3's real data (`scripts/phase6_bootstrap_slopes.py`,
       `src/ssmquant/analysis/{bootstrap,slope_fit,figures}.py`, 15 unit
@@ -191,8 +198,10 @@ lands, with the exact config + seed used for each figure/table.
 - **SSM**: Audio Mamba (AuM) — https://github.com/mhamzaerol/Audio-Mamba-AuM
 - **Transformer baseline**: AST —
   `MIT/ast-finetuned-audioset-10-10-0.4593` (Hugging Face)
-- **Stretch (ASR)**: Mamba-based HuBERT —
-  https://github.com/hckuo145/Mamba-based-HuBERT vs. standard HuBERT
+- **Stretch (ASR), dropped**: Mamba-based HuBERT —
+  https://github.com/hckuo145/Mamba-based-HuBERT vs. standard HuBERT.
+  No public checkpoint exists (verified 2026-10-19, see DECISIONS.md) —
+  Phase 5 was dropped rather than attempting from-scratch SSL
+  pretraining.
 
-Checkpoint availability has not been verified yet — that's part of the
-Phase 0 gate.
+AuM and AST's checkpoints are both real and verified (Phase 0/1).
