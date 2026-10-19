@@ -163,7 +163,14 @@ cache/               Cached full-precision outputs/states — gitignored
       tests). Turns the floor-effect finding into a number: AuM's length-
       degradation slope is ~15x shallower than AST's (-0.04 vs -0.61
       accuracy points per decade of length). Figures in `figures/`.
-      Doesn't need a GPU — will extend to cover Phase 4 once that lands.
+      **Extended 2026-10-19 to cover Phase 4** (`scripts/phase6_phase4_bootstrap.py`,
+      a new `plot_accuracy_vs_bits` figure function) — real nonparametric
+      bootstrap CIs on all 12 Phase 4 conditions confirm the accuracy
+      differences are real, not sampling noise: state h's 8-bit CI
+      [0.77, 0.89] doesn't overlap A/B,C's 8-bit CIs (~[0.93, 0.99]), and
+      Δ's 6-bit CI [0.83, 0.94] doesn't overlap its own 4-bit CI
+      [0.13, 0.26]. `results/phase6_phase4_bootstrap.json`,
+      `figures/phase6_phase4_accuracy_vs_bits.pdf`.
 - [ ] **Phase 7** — Paper draft (LaTeX, 1–3 pages, arXiv-ready).
 
 ## Reproducing a figure

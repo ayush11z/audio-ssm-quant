@@ -2,6 +2,30 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-19 — Phase 6 extended to cover Phase 4 (local, no GPU)
+
+`scripts/phase6_bootstrap_slopes.py`'s own docstring flagged this: it only
+covered Phase 1/3 since Phase 4 hadn't landed when it was written. New
+script `scripts/phase6_phase4_bootstrap.py` runs a real nonparametric
+bootstrap (not a Wilson fallback -- Phase 4's native-length re-run has
+full per-clip rows for all 12 conditions, unlike Phase 1's lost-per-clip
+3pc baseline) over `results/phase4_aum_ablation_native.jsonl`, and a new
+`plot_accuracy_vs_bits` figure function in
+`src/ssmquant/analysis/figures.py` (bit-width on the x-axis instead of
+length -- Phase 4 is a single-length x 4-target x 3-bit-width grid, not a
+length sweep, so the existing `plot_accuracy_vs_length` doesn't fit).
+
+**95% bootstrap CIs confirm the point estimates aren't noise**: state h's
+8-bit CI is [0.771, 0.893] -- doesn't overlap A's [0.943, 0.993] or B,C's
+[0.929, 0.993] at the same bit-width, so h's degradation is already
+real and significant at the mildest quantization tested, not within
+sampling noise of the other three targets. Δ's 6-bit CI [0.829, 0.936]
+vs. its own 4-bit CI [0.129, 0.257] -- no overlap, confirming the cliff
+is real, not an artifact of n=140 being too small to see sampling
+fluctuation. Output: `results/phase6_phase4_bootstrap.json`,
+`figures/phase6_phase4_accuracy_vs_bits.pdf`. 38/38 unit tests still pass
+(no changes needed to `bootstrap.py` itself, only a new figure function).
+
 ## 2026-10-19 — Phase 4 native-length RE-RUN (Modal, L4): h and Δ are both fragile, just at different bit-widths; A and B,C stay robust everywhere
 
 The 2026-10-13 entry's own "not decided" section flagged the fix needed:
