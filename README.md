@@ -136,17 +136,25 @@ cache/               Cached full-precision outputs/states — gitignored
       (`results/phase1_run_logs/`, `results/phase1_{ast,aum}_full_precision_3pc_summary.json`).
       The Phase 3 quantized grid's own per-clip rows are intact.
 - [x] **Phase 4** — SSM-internal ablations (Δ / A / B,C / h) + state
-      divergence logging, completed 2026-10-13 on the McAuley lab's
-      deepdiver (RTX A6000; gate re-passed, 4th time). Scoped to 5
-      clips/length, 12 conditions. At native length (the only length
-      with accuracy headroom) quantizing the **recurrent state h** hurts
-      first (3/5 at 8-bit, 0-1/5 at 6/4-bit), then **Δ** (0/5 at 4-bit);
-      A and B,C stay at 5/5 at every bit-width. State divergence ranks
-      them the same way and plateaus instead of compounding with length.
-      n=5 (only 2 distinct words at extended lengths) — directional, not
-      a firm estimate. `results/phase4_aum_ablation_1pc.jsonl`,
-      `results/phase4_state_divergence_1pc_summary.json`,
-      `scripts/phase4_summarize.py`; see DECISIONS.md.
+      divergence logging. **Primary result: native-length re-run on Modal
+      (L4 GPU), completed 2026-10-19, full class-balanced sample (140
+      clips, 35 words, 12 conditions)** — supersedes the 2026-10-13
+      deepdiver run's n=5/2-distinct-word estimate. **Recurrent state h**
+      degrades gradually and is already hurt at the mildest quantization
+      tested (83.6% acc at 8-bit); **Δ** stays intact through 6-bit
+      (88.6%) then collapses between 6 and 4-bit (19.3%), landing near
+      h's own 4-bit collapse (7.9%); **A** and **B,C** stay essentially
+      untouched at every bit-width (95–97%). State divergence explains
+      the shape difference: h's error accumulates smoothly every
+      timestep, Δ's is heavy-tailed (low median, huge max — most
+      timesteps barely perturbed, a minority blow up catastrophically).
+      `results/phase4_aum_ablation_native.jsonl`,
+      `results/phase4_state_divergence_native_summary.json`,
+      `scripts/phase4_summarize_native.py`. Extended lengths not re-run
+      (already at full-precision chance floor, Phase 1/3) — the
+      2026-10-13 run's "divergence plateaus, doesn't compound with
+      length" finding still stands, just not re-verified here. See
+      DECISIONS.md's 2026-10-13 and 2026-10-19 entries.
 - [ ] **Phase 5 (stretch)** — Mamba-HuBERT vs. HuBERT on concatenated
       LibriSpeech (WER).
 - [x] **Phase 6** — Bootstrap CIs, slope fits, figures, tables, computed

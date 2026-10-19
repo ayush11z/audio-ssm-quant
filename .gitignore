@@ -23,9 +23,11 @@ cache/
 # Results are logged as JSONL and kept, but large artifacts are not
 results/*.npz
 results/*.pt
-# Raw per-timestep divergence traces (~318MB, over GitHub's 100MB limit);
-# scripts/phase4_summarize.py writes the committed *_summary.json from it
+# Raw per-timestep divergence traces (96-318MB, over/near GitHub's 100MB
+# limit); scripts/phase4_summarize*.py write the committed *_summary.json
+# files from them
 results/phase4_state_divergence_*pc.json
+results/phase4_state_divergence_native.json
 
 # OS / editor
 .DS_Store

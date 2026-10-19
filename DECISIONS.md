@@ -2,6 +2,133 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-19 — Phase 4 native-length RE-RUN (Modal, L4): h and Δ are both fragile, just at different bit-widths; A and B,C stay robust everywhere
+
+The 2026-10-13 entry's own "not decided" section flagged the fix needed:
+that run's n=5 sample covered only 2 distinct words per extended length,
+so nothing there was a firm estimate. Extended lengths are already at
+AuM's full-precision chance floor (Phase 1/3) and add no information
+regardless of sample size, so this re-run is **native length only**, using
+the full, already-built, class-balanced manifest (`results/phase1_eval_manifest.json`,
+not the `_1pc`/`_3pc` budget-scoped variants) filtered to `length_sec ==
+"native"`: 140 clips, exactly 4 per word across all 35 classes. State
+divergence is logged for every clip (not a subset) since native clips are
+cheap. Same 12 conditions, same calibration set, Linears still full
+precision -- only the grid's sample composition changed.
+
+**Getting a GPU for this took most of the elapsed time, not the eval
+itself.** Thunder Compute (used for the first Phase 4 run before this one)
+had its account deactivated over a billing issue and the user chose to
+stop using it entirely rather than resolve it; DSMLP was ruled out after
+its pod was destroyed twice mid-session when Claude Code's TUI was run
+over nested SSH (see the 2026-10-07/08 entry). Checked next, in order:
+Kaggle free tier (T4, compute 7.5 -- below AuM's mamba_ssm/causal_conv1d
+Ampere+ requirement), Colab free tier (A100/L4 grayed out, only T4
+offered, same 7.5 wall), Lightning AI (L4 available and affordable, but
+requires a card on file and the user declined), Azure (has credits, but
+quota registration ("Microsoft.Compute resource provider isn't
+registered") blocked provisioning and also wanted a card). Landed on
+**Modal**: $30 free credit, L4 GPU (Ada, compute 8.9, clears the Ampere+
+wall), driven directly from local Bash via its Python SDK/CLI -- no SSH
+relay, no card entered. User's explicit standing instruction before going
+to sleep: autonomously `modal app stop` if spend approached $25 of the
+$30 (leaving $5), since they'd be unavailable to confirm. Final metered
+cost: **$1.34** -- the stop threshold was never approached.
+
+**Two real bugs hit and fixed in `scripts/modal_phase4_app.py`** (beyond
+the usual porting friction already documented for every other provider):
+1. **Many-small-files staging bottleneck.** The first `run_gate` attempt
+   hit a 600s function timeout with zero diagnostic output, because
+   `subprocess.run(..., capture_output=True)` buffers everything until
+   exit. Removing `capture_output` (letting output stream live, same as
+   every other Phase 4 run script) revealed the real cause: copying the
+   ~85k individual files of the extracted Speech Commands dataset from a
+   Modal Volume mount into a *cold* container is slow -- `setup_data`'s
+   own identical-looking copy had been fast only because it ran in the
+   same warm-cache container that had just written those files. Fixed by
+   storing the dataset and processed manifest as single `.tar.gz`
+   archives on the volume and extracting them locally inside each
+   container, instead of copying directory trees over the mount.
+2. **Stale Docker image layer cache.** `run_native_ablation`'s first real
+   attempt failed immediately (`cp: ... phase4_aum_ablation_native_eval.py:
+   No such file or directory`) because the image's `git clone` layer had
+   been built and cached *before* that script was ever pushed to GitHub
+   this session -- Modal only invalidates a cached layer when the command
+   *string* changes, not when the remote repo does. Fixed by pinning the
+   clone to an exact commit SHA (`REPO_COMMIT`) and changing the clone
+   command to `git clone ... && git checkout -q {REPO_COMMIT}`, so bumping
+   that constant after every push that matters changes the cache key.
+   (Also had to distinguish `modal run --detach`'s local "completed, exit
+   code 0" -- which can just mean the local connection dropped, not that
+   the remote job finished -- from the real signal, `modal app list`'s
+   state + stop timestamp and `modal app logs <id>`.)
+
+**Results** (`results/phase4_aum_ablation_native.jsonl`, 1680 rows = 12
+conditions x 140 clips; `results/phase4_state_divergence_native_summary.json`,
+produced by `scripts/phase4_summarize_native.py` from the raw 96MB
+per-timestep trace file, which is gitignored and kept only on the Modal
+volume / local disk, not pushed):
+
+| condition | accuracy (n=140) | condition | accuracy (n=140) |
+|---|---|---|---|
+| Δ 8-bit | 95.71% (134) | A 8-bit | 97.14% (136) |
+| Δ 6-bit | 88.57% (124) | A 6-bit | 97.14% (136) |
+| Δ 4-bit | **19.29% (27)** | A 4-bit | 95.00% (133) |
+| B,C 8-bit | 96.43% (135) | state h 8-bit | **83.57% (117)** |
+| B,C 6-bit | 96.43% (135) | state h 6-bit | **30.71% (43)** |
+| B,C 4-bit | 96.43% (135) | state h 4-bit | **7.86% (11)** |
+
+State divergence (`||h_quantized - h_full_precision||`, flattened across
+every clip x layer x direction x timestep, n=436,800 values per
+condition):
+
+| condition | median | mean | p90 | max |
+|---|---|---|---|---|
+| Δ 8/6/4-bit | 0.0078 / 0.0279 / 0.1619 | 0.77 / 2.35 / **5.66** | 2.51 / 8.62 / 19.66 | 23.3 / 47.8 / **126.8** |
+| A 8/6/4-bit | 0.0094 / 0.0344 / 0.1740 | 0.03 / 0.12 / 0.71 | 0.09 / 0.34 / 2.25 | 0.4 / 1.3 / 8.1 |
+| B,C 8/6/4-bit | 0.0156 / 0.0636 / 0.2621 | 0.07 / 0.29 / 1.34 | 0.27 / 1.13 / 5.33 | 3.6 / 5.4 / 20.3 |
+| state h 8/6/4-bit | **0.3929 / 1.1276 / 2.4996** | 3.35 / 6.04 / 7.92 | 12.3 / 21.5 / 24.5 | 44.3 / 75.8 / 102.9 |
+
+**Findings:**
+1. **The 2026-10-13 ordering (h > Δ >> A ≈ B,C) holds up, and is much
+   clearer at n=140 than it was at n=5** -- but the properly-sampled data
+   reveals a shape the thin sample couldn't show: **h and Δ are both
+   fragile, just at different bit-widths, not a strict monotonic ranking
+   at every level.** State h degrades gradually and is already visibly
+   hurt at the mildest quantization tested (83.6% at 8-bit, vs. a ~96-97%
+   full-precision-adjacent baseline for every other target at 8-bit); Δ
+   stays essentially intact through 6-bit (88.6%, only 7pp off its own
+   8-bit number) and then falls off a cliff specifically between 6 and
+   4-bit, landing close to state h's 4-bit collapse (19.3% vs. 7.9%). A
+   and B,C are essentially untouched at *every* bit-width tested (95-97%
+   throughout) -- B,C's accuracy is identical (96.43%) at all three
+   bit-widths, meaning its quantization error isn't flipping any
+   predictions in this regime at all.
+2. **The divergence shape explains why Δ's failure is a cliff and h's is
+   a slope.** h's median divergence rises smoothly and is already an
+   order of magnitude above Δ/A/B,C at 8-bit (0.39 vs 0.008-0.016) --
+   consistent with error accumulating at *every* timestep once h itself is
+   quantized. Δ's divergence is heavy-tailed instead: its *median* at
+   4-bit (0.16) is actually lower than A's and B,C's medians at 4-bit
+   (0.17, 0.26), but its *mean* and *max* are the largest of any
+   condition at any bit-width (5.66 mean, 126.8 max) -- most timesteps are
+   barely perturbed, but a minority blow up catastrophically. That's
+   consistent with Δ gating `exp(Δ·A)` in the discretization: most of the
+   time a quantization error in Δ is harmless, but specific input-dependent
+   values apparently push the recurrence into a regime where small Δ
+   errors get amplified, and 4-bit pushes enough timesteps into that
+   regime to break the whole clip.
+3. **Does not re-test "divergence doesn't compound with length"** -- this
+   run is native-length only by design (see above), so that 2026-10-13
+   finding is carried forward unchanged, not re-verified here.
+
+**Not decided (scope calls for the user)**: a relative divergence metric
+(`||h_q - h_fp|| / ||h_fp||`) would separate "h has large divergence
+because it's a large tensor" from "h has large divergence because
+quantizing it is uniquely damaging" -- not computed here. Also unexplored:
+whether Δ's heavy-tailed blowups cluster on specific channels/timesteps
+(would need per-channel, not per-tensor, divergence logging to check).
+
 ## 2026-10-13 — Phase 4 grid COMPLETED (deepdiver, McAuley lab): the recurrent state h is the fragile tensor, divergence does not compound with length
 
 Third attempt, first to finish. Ran on the McAuley lab's shared server
