@@ -2,6 +2,50 @@
 
 Every design choice and deviation from the project brief, with the reason. Newest entries at the top.
 
+## 2026-10-19 — Phase 7: paper draft written and compiled (`paper/`)
+
+Every number in the draft is pulled directly from the committed results
+files (`results/phase1_*_3pc*`, `results/phase3_*_3pc.jsonl`,
+`results/phase6_phase4_bootstrap.json`, `results/phase4_state_divergence_
+native_summary.json`) -- none typed from memory. Structured around H1
+(Table 1 / Figure 1, from the 2026-10-07 Phase 3 3pc entry) and H2
+(Table 2 / Figure 2, from the 2026-10-19 Phase 4 + Phase 6 extension
+entries above).
+
+**Related work citations verified before writing, not assumed**: web
+search confirmed exact arXiv IDs and author lists for all 7 references
+(Mamba, AST, AuM, Speech Commands, GPTQ, MambaQuant, Quamba2) -- MambaQuant
+and Quamba2 are a real, important find: both are 2025 PTQ *recipes*
+specifically for the Mamba family, and Quamba2 already reports "massive
+outliers" in the scan's state/activations and applies special handling to
+$B,C$. This is complementary to, not scooped by, our result: those are
+quantizer designs, not a tensor-isolated root-cause ablation, and neither
+studies input length. The paper's related-work section says this
+explicitly rather than ignoring the overlap.
+
+**Compile toolchain**: no local LaTeX was installed; installed `tectonic`
+(a self-contained, dependency-fetching LaTeX engine) via `brew install
+tectonic` rather than a full MacTeX/BasicTeX distribution, specifically
+so the draft could be verified to actually compile before calling it
+"arXiv-ready" rather than trusting untested `.tex`.
+
+**One real bug caught by actually rendering the output, not just
+compiling it**: the first `twocolumn` draft came out to 6 pages (over the
+brief's 1-3 page target) at `[11pt]` single-column -- fixed by switching
+to `[10pt,twocolumn]` with tighter margins, landing at exactly 3 pages.
+Separately, rendering Figure 2 (`figures/phase6_phase4_accuracy_vs_bits.pdf`)
+to a PNG and inspecting it directly (not just trusting the LaTeX compiled
+without error) revealed its own title was being clipped by matplotlib
+at the source -- too long for the figure's canvas width, cut off mid-word
+("95%)" missing) regardless of how it was scaled in LaTeX. Fixed at the
+source (`scripts/phase6_phase4_bootstrap.py`'s title string shortened)
+and regenerated, not patched around in the paper.
+
+Output: `paper/main.tex`, `paper/refs.bib`, `paper/figures/` (self-
+contained copies of the two cited figures), `paper/main.pdf` (committed
+for convenience -- small, 92KB). Rebuild with `tectonic main.tex` from
+`paper/`.
+
 ## 2026-10-19 — Phase 5 dropped: Mamba-based-HuBERT has no public checkpoint
 
 Checked before writing any code (same discipline as every other phase --

@@ -69,7 +69,7 @@ def main():
     out_path = FIGURES / "phase6_phase4_accuracy_vs_bits.pdf"
     plot_accuracy_vs_bits(
         series,
-        title="AuM native-length: accuracy vs. SSM-internal quantization bit-width (n=140, 95% CI)",
+        title="AuM native-length: accuracy vs. quantization bit-width (n=140)",
         out_path=out_path,
     )
     print(f"Wrote {out_path}")

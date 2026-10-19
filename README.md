@@ -178,7 +178,16 @@ cache/               Cached full-precision outputs/states — gitignored
       Δ's 6-bit CI [0.83, 0.94] doesn't overlap its own 4-bit CI
       [0.13, 0.26]. `results/phase6_phase4_bootstrap.json`,
       `figures/phase6_phase4_accuracy_vs_bits.pdf`.
-- [ ] **Phase 7** — Paper draft (LaTeX, 1–3 pages, arXiv-ready).
+- [x] **Phase 7** — Paper draft (`paper/main.tex`, 3 pages, two-column,
+      compiled and verified with `tectonic`). Structured around H1
+      (standard quantization vs. length, Table 1/Figure 1) and H2 (which
+      SSM-internal tensor is fragile, Table 2/Figure 2), with every
+      number pulled directly from committed results files. Related work
+      cites two 2025 Mamba-specific PTQ papers (MambaQuant, Quamba2) found
+      while researching citations — both independently flag the scan's
+      state/activations as hard to quantize, which this paper's ablation
+      gives a tensor-level explanation for. `paper/refs.bib`,
+      `paper/figures/`, `paper/main.pdf`. See DECISIONS.md.
 
 ## Reproducing a figure
 
