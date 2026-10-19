@@ -32,6 +32,14 @@ volume = modal.Volume.from_name("audio-ssm-quant-data", create_if_missing=True)
 VOL = "/vol"
 REPO = "/root/audio-ssm-quant"
 GPU = "L4"  # Ada, compute 8.9 -- clears AuM's Ampere+ (8.0+) requirement with margin
+# Pinned so the clone step's command string changes (and Modal's image
+# cache invalidates) whenever this repo gets new commits -- without this,
+# Modal reuses the cached clone from whenever the image was first built,
+# silently running stale code (hit exactly this: run_native_ablation's
+# first attempt failed because the image predated this very script being
+# pushed). Update with `git rev-parse HEAD` before any run that depends
+# on a change made since the image was last built.
+REPO_COMMIT = "fc66f77380c372bd717c0c4baa4ac54a2f4608c2"
 
 image = (
     modal.Image.from_registry("nvidia/cuda:11.8.0-devel-ubuntu22.04", add_python="3.10")
@@ -47,7 +55,8 @@ image = (
         gpu=GPU,
     )
     .run_commands(
-        f"git clone -q https://github.com/ayush11z/audio-ssm-quant.git {REPO}",
+        f"git clone -q https://github.com/ayush11z/audio-ssm-quant.git {REPO} && "
+        f"cd {REPO} && git checkout -q {REPO_COMMIT}",
         f"cd {REPO} && mkdir -p third_party && "
         f"git clone -q https://github.com/mhamzaerol/Audio-Mamba-AuM.git third_party/Audio-Mamba-AuM",
     )
